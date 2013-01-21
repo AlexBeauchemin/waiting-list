@@ -9,28 +9,26 @@
 </body>
 
 <template name="patientlist">
-  <div class="patientlist">
+  <ul class="patientlist">
     {{#each patients}}
       {{> patient}}
     {{/each}}
-  </div>
+  </ul>
 
   {{#if selected_name}}
   <div class="details">
-    <div class="name">{{selected_name}}</div>
-    <input type="button" class="inc" value="Give 5 points" />
+    <input type="button" class="up" value="Move up" />
+    <input type="button" class="down" value="Move down" />
+    <input type="button" class="reset" value="Reset positions" />
   </div>
   {{/if}}
 
-  {{#unless selected_name}}
-  <div class="none">Click a patient to select</div>
-  {{/unless}}
 </template>
 
 <template name="patient">
-  <div class="patient {{selected}}">
+  <li class="patient {{selected}}" data-position="{{position}}">
     <span class="name">{{name}}</span>
     <span class="position">{{position}}</span>
-  </div>
+  </li>
 </template>
 
