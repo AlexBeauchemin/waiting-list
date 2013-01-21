@@ -1,0 +1,36 @@
+<head>
+  <title>Patient List</title>
+</head>
+
+<body>
+  <div id="outer">
+    {{> patientlist}}
+  </div>
+</body>
+
+<template name="patientlist">
+  <div class="patientlist">
+    {{#each patients}}
+      {{> patient}}
+    {{/each}}
+  </div>
+
+  {{#if selected_name}}
+  <div class="details">
+    <div class="name">{{selected_name}}</div>
+    <input type="button" class="inc" value="Give 5 points" />
+  </div>
+  {{/if}}
+
+  {{#unless selected_name}}
+  <div class="none">Click a patient to select</div>
+  {{/unless}}
+</template>
+
+<template name="patient">
+  <div class="patient {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="position">{{position}}</span>
+  </div>
+</template>
+
