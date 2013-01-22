@@ -53,8 +53,11 @@ if (Meteor.isClient) {
                 Session.set("selected_patient_position", Session.get("selected_patient_position") + 1);
             }
         },
-        'click input.reset':function () {
+        'click input.repair':function () {
             updatePatients();
+        },
+				'click input.reset':function () {
+            resetCollections();
         }
     });
 
@@ -87,23 +90,7 @@ if (Meteor.isServer) {
         return Patients.find({institution:institution});
     });
     Meteor.startup(function () {
-        if (Patients.find().count() === 0) {
-            var names = ["Ada Lovelace",
-                "Grace Hopper",
-                "Marie Curie",
-                "Carl Friedrich Gauss",
-                "Nikola Tesla",
-                "Claude Shannon"];
-            for (var i = 0; i < names.length; i++)
-                Patients.insert({name:names[i], position:i});
-        }
-        if(Institutions.find().count() === 0) {
-            var institutions = ["Institution 1",
-                "Institution 2",
-                "Institution 3"];
-            for (var i = 0; i < institutions.length; i++)
-                Institutions.insert({name:institutions[i]});
-        }
+				fillCollections();
     });
 }
 
@@ -121,4 +108,45 @@ function updatePatients(){
 //        var institution = institutions[Math.floor(Math.random() * institutions.length)];
 //        Patients.update($(patient).data('id'), {$set:{institution:institution}});
     });
+}
+
+function resetCollections() {
+	deleteCollections();
+	fillCollections();
+}
+
+function deleteCollections() {
+	Institutions.find({}).forEach(function(institution){
+		Institutions.remove({id: institution._id});
+		Patients.remove({institution: institution._id});
+	});
+}
+
+function fillCollections () {
+		//Add institutions
+		if(Institutions.find().count() === 0) {
+				var institutions = ["Institution 1",
+						"Institution 2",
+						"Institution 3"];
+				for (var i = 0; i < institutions.length; i++)
+						Institutions.insert({name:institutions[i]});
+		}
+
+		//Add patients
+		if (Patients.find().count() === 0) {
+				var institutions = [];
+				Institutions.find().forEach(function(institution){
+					institutions.push(institution._id);
+				});
+				var names = ["Ada Lovelace",
+						"Grace Hopper",
+						"Marie Curie",
+						"Carl Friedrich Gauss",
+						"Nikola Tesla",
+						"Claude Shannon"];
+				for (var i = 0; i < names.length; i++) {
+						var institution = institutions[Math.floor(Math.random() * institutions.length)];
+						Patients.insert({name:names[i], position:i, institution: institution});
+				}
+		}
 }
