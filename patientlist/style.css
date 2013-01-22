@@ -15,8 +15,17 @@ body {
     margin: 0 auto;    
 }
 
-.patientlist {
+.institution {
+    float:left;
+    cursor: pointer;
+    margin-right:30px;
+    text-decoration: underline;
+}
+
+.patientlist, .institutionlist {
 	list-style: none;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
 }
 
 .patient {

@@ -1,79 +1,124 @@
 Patients = new Meteor.Collection("patients");
+Institutions = new Meteor.Collection("institutions");
 
 if (Meteor.isClient) {
-		Meteor.subscribe('patients');
-		Template.patientlist.patients = function () {
-				return Patients.find({}, {sort: {position: 1, name: -1}});
-		};
+    Meteor.subscribe('institutions',null,function(){
+        //TODO: better way to point to the first element id
+        Session.set("current_institution", Institutions.find({}, {sort:{name:1},limit:1}).fetch()[0]._id);
+        Meteor.autosubscribe(function(){
+            Meteor.subscribe('patients',Session.get("current_institution"));
+        });
+    });
 
-		Template.patientlist.selected_name = function () {
-				var patient = Patients.findOne(Session.get("selected_patient"));
-				return patient && patient.name;
-		};
 
-		Template.patient.selected = function () {
-				return Session.equals("selected_patient", this._id) ? "selected" : '';
-		};
+    Template.institutionslist.institutions = function () {
+        return Institutions.find({}, {sort:{name:1}});
+    };
 
-		Template.patientlist.events({
-				'click input.up': function () {
-						if(Session.get("selected_patient_position")>1){
-							var switching_patient = Patients.findOne({position: Session.get("selected_patient_position")-1});
-							Patients.update(Session.get("selected_patient"), {$inc: {position: -1}});
-							Patients.update(switching_patient._id,{$inc: {position: +1}});
-							Session.set("selected_patient_position", Session.get("selected_patient_position")-1);
-						}
-				},
-				'click input.down': function () {
-						var switching_patient = Patients.findOne({position: Session.get("selected_patient_position")+1});
-						if(switching_patient){
-							Patients.update(Session.get("selected_patient"), {$inc: {position: 1}});
-							Patients.update(switching_patient._id,{$inc: {position: -1}});
-							Session.set("selected_patient_position", Session.get("selected_patient_position")+1);
-						}
-				},
-				'click input.reset': function () {
-						var patients = Patients.find(),
-								count = 0;
+    Template.institution.events({
+        'click':function () {
+            Session.set("current_institution", this._id);
+            updatePatients();
+        }
+    });
 
-						patients.forEach(function (patient) {
-							Patients.update(patient._id, {$set: {position: count+1}});
-							count += 1;
-						});
-				}
-		});
 
-		Template.patientlist.rendered = function() {
-				$(".patientlist").sortable();
-		};
+    Template.patientlist.patients = function () {
+        return Patients.find({}, {sort:{position:1, name:-1}});
+    };
 
-		Template.patient.events({
-				'click': function () {
-						Session.set("selected_patient", this._id);
-						Session.set("selected_patient_position", this.position);
-				}
-		});
+    Template.patientlist.selected_name = function () {
+        var patient = Patients.findOne(Session.get("selected_patient"));
+        return patient && patient.name;
+    };
 
+    Template.patient.selected = function () {
+        return Session.equals("selected_patient", this._id) ? "selected" : '';
+    };
+
+    Template.patientlist.events({
+        'click input.up':function () {
+            if (Session.get("selected_patient_position") > 1) {
+                var switching_patient = Patients.findOne({position:Session.get("selected_patient_position") - 1});
+                Patients.update(Session.get("selected_patient"), {$inc:{position:-1}});
+                Patients.update(switching_patient._id, {$inc:{position:+1}});
+                Session.set("selected_patient_position", Session.get("selected_patient_position") - 1);
+            }
+        },
+        'click input.down':function () {
+            var switching_patient = Patients.findOne({position:Session.get("selected_patient_position") + 1});
+            if (switching_patient) {
+                Patients.update(Session.get("selected_patient"), {$inc:{position:1}});
+                Patients.update(switching_patient._id, {$inc:{position:-1}});
+                Session.set("selected_patient_position", Session.get("selected_patient_position") + 1);
+            }
+        },
+        'click input.reset':function () {
+            updatePatients();
+        }
+    });
+
+    Template.patientlist.rendered = function () {
+        $(".patientlist").sortable({
+            start: function (event,ui) {
+
+            },
+            update: function (event,ui) {
+                updatePatients();
+            }
+        });
+    };
+
+    Template.patient.events({
+        'click':function () {
+            Session.set("selected_patient", this._id);
+            Session.set("selected_patient_position", this.position);
+        }
+    });
+
+}
+
+
+if (Meteor.isServer) {
+    Meteor.publish("institutions", function () {
+        return Institutions.find({});
+    });
+    Meteor.publish("patients", function (institution) {
+        return Patients.find({institution:institution});
+    });
+    Meteor.startup(function () {
+        if (Patients.find().count() === 0) {
+            var names = ["Ada Lovelace",
+                "Grace Hopper",
+                "Marie Curie",
+                "Carl Friedrich Gauss",
+                "Nikola Tesla",
+                "Claude Shannon"];
+            for (var i = 0; i < names.length; i++)
+                Patients.insert({name:names[i], position:i});
+        }
+        if(Institutions.find().count() === 0) {
+            var institutions = ["Institution 1",
+                "Institution 2",
+                "Institution 3"];
+            for (var i = 0; i < institutions.length; i++)
+                Institutions.insert({name:institutions[i]});
+        }
+    });
 }
 
 
 
 
 
-if (Meteor.isServer) {
-    Meteor.publish("patients", function(test) {
-        return Patients.find({});
-    });
-    Meteor.startup(function () {
-        if (Patients.find().count() === 0) {
-						var names = ["Ada Lovelace",
-					                "Grace Hopper",
-					                "Marie Curie",
-					                "Carl Friedrich Gauss",
-					                "Nikola Tesla",
-					                "Claude Shannon"];
-            for (var i = 0; i < names.length; i++)
-                Patients.insert({name: names[i], position: i});
-        }
+function updatePatients(){
+//    var institutions = [];
+//    $('.institution').each(function(index,el){
+//        institutions.push($(el).data('id'));
+//    });
+    $('.patient').each(function(index,patient){
+        Patients.update($(patient).data('id'), {$set:{position:index + 1}});
+//        var institution = institutions[Math.floor(Math.random() * institutions.length)];
+//        Patients.update($(patient).data('id'), {$set:{institution:institution}});
     });
 }

@@ -4,9 +4,22 @@
 
 <body>
   <div id="outer">
+    {{> institutionslist}}
     {{> patientlist}}
   </div>
 </body>
+
+<template name="institutionslist">
+    <ul class="institutionlist">
+        {{#each institutions}}
+            {{> institution}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="institution">
+    <li class="institution {{selected}}" data-id="{{_id}}">{{name}}</li>
+</template>
 
 <template name="patientlist">
   <ul class="patientlist">
@@ -26,7 +39,7 @@
 </template>
 
 <template name="patient">
-  <li class="patient {{selected}}" data-position="{{position}}">
+  <li class="patient {{selected}}" data-id="{{_id}}">
     <span class="name">{{name}}</span>
     <span class="position">{{position}}</span>
   </li>
