@@ -1,0 +1,92 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    margin: 50px 0;
+    padding: 0;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+.delete {
+    color: red;
+    float: right;
+    text-align: right;
+}
+
+.details-add {
+  input {
+    margin-top: 10px;
+  }
+}
+
+.nav-list > li.patient {
+  &.active {
+    a {
+      .position {
+        color: #d3d3d3;
+      }
+      .delete {
+        color: #f08080;
+      }
+    }
+  }
+  a {
+    display: block;
+    margin: 5px 0;
+    padding: 10px;
+  }
+}
+
+.patientlist {
+    font-size:200%;
+}
+
+.position {
+    color: grey;
+}
+
+
+.inc {
+  cursor: pointer;
+}
+
+
+
+
+
+// LOGIN FORM
+
+.container-login {
+  display: none;
+  .form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+
+    .form-signin-heading,
+    .checkbox {
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      font-size: 16px;
+      height: auto;
+      margin-bottom: 15px;
+      padding: 7px 9px;
+    }
+  }
+}
+
