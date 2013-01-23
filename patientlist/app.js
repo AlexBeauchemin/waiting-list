@@ -73,9 +73,14 @@ if (Meteor.isClient) {
             }
         },
         'click a.add':function () {
-            var name = $('.addPatient').val();
-            if(name)
-                Patients.insert({name:name, position:$('.patient').length+1, institution:Session.get("current_institution")});
+            var name = $('.addPatient').val(),
+								position = $('.patient').length+ 1,
+								institution = Session.get("current_institution");
+            if(name && position && institution) {
+								Meteor.call("create_patient", name, position, institution, function(error, patient_id) {
+										outputErrors(error);
+								});
+						}
         },
         'click a.repair':function () {
             updatePatients();
@@ -137,4 +142,9 @@ function deleteCollections() {
 		Institutions.remove({id: institution._id});
 		Patients.remove({institution: institution._id});
 	});
+}
+
+function outputErrors(error){
+	//TODO: Add environements (dev = show errors , prod = hide errors);
+	console.log(error);
 }
