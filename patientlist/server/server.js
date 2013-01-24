@@ -1,29 +1,27 @@
 // PUBLISH
 
 Meteor.publish("institutions", function () {
-    return Institutions.find({});
+	return Institutions.find({});
 });
 Meteor.publish("patients", function (institution) {
-    return Patients.find({institution:institution});
+	return Patients.find({institution:institution});
 });
-
-
 
 
 //METHODS
 
 Meteor.methods({
-	create_patient: function(name,position,institution) {
-        var patient_id = Patients.insert({name: name,position: position, institution: institution});
-        return patient_id;
+	create_patient:function (name, position, institution) {
+		//TODO: Verify if user is admin of the institudion
+		var patient_id = Patients.insert({name:name, position:position, institution:institution});
+		return patient_id;
 	},
-    update_patient: function(id,position){
-        Patients.update(id, {$set:{position:position}});
-    },
-	empty: null // To avoid adding, removing comas for last item
+	update_patient:function (id, position) {
+		//TODO: Verify if user is admin of the institution
+		Patients.update(id, {$set:{position:position}});
+	},
+	empty:null // To avoid adding, removing comas for last item
 });
-
-
 
 
 //Authorizations

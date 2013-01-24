@@ -1,0 +1,50 @@
+<head>
+  <meta charset="utf-8">
+  <title>Patient List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="Alex Beauchemin">
+
+</head>
+
+<body>
+
+{{> header}}
+
+<div class="container-login">
+	{{> login}}
+</div>
+
+
+<div class="container-fluid container-main">
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                {{> institutionslist}}
+            </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+            <div class="row-fluid">
+                <div class="span4">
+                    {{> patientlist}}
+                </div><!--/span-->
+                <div class="span4">
+
+                </div><!--/span-->
+                <div class="span4">
+
+                </div><!--/span-->
+            </div><!--/row-->
+        </div><!--/span-->
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>&copy; Company 2012</p>
+    </footer>
+
+</div><!--/.fluid-container-->
+
+</body>
+

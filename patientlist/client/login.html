@@ -1,0 +1,36 @@
+<template name="login">
+	<form class="form-signin clearfix">
+		<h2 class="form-signin-heading">
+		{{#if state.create}}
+			Create an account
+		{{/if}}
+		{{#if state.login}}
+			Log in
+		{{/if}}
+		{{#if state.retrieve}}
+			Retrieve your password
+		{{/if}}
+		</h2>
+		<input type="text" class="input-block-level login-email" placeholder="Email address">
+		<input type="password" class="input-block-level login-password" placeholder="Password">
+		{{#if state.create}}
+			<button class="btn btn-large btn-primary" type="submit">Create</button>
+			<div class="more">
+				<a href="#" class="switch-login">Log in</a>
+			</div>
+		{{/if}}
+		{{#if state.login}}
+			<label class="checkbox">
+				<input type="checkbox" value="remember-me"> Remember me
+			</label>
+			<button class="btn btn-large btn-primary" type="submit">Log in</button>
+			<div class="more">
+				<a href="#" class="switch-create">Create account</a><br />
+				<a href="#" class="switch-forgot">Forgot password</a>
+			</div>
+		{{/if}}
+		{{#if state.retrieve}}
+
+		{{/if}}
+	</form>
+</template>

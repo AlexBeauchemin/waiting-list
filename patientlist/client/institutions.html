@@ -1,0 +1,12 @@
+<template name="institutionslist">
+    <ul class="nav nav-list">
+        <li class="nav-header">Institutions</li>
+        {{#each institutions}}
+            {{> institution}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="institution">
+    <li class="institution {{active}}" data-id="{{_id}}"><a href="#">{{name}}</a></li>
+</template>

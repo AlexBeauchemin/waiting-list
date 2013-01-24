@@ -1,0 +1,32 @@
+<template name="patientlist">
+   <ul class="nav nav-list patientlist">
+    {{#each patients}}
+      {{> patient}}
+    {{/each}}
+  </ul>
+
+  {{#if selected_name}}
+  <div class="details-up-down">
+      <a href="#" class="up btn btn-primary">Move up</a>
+      <a href="#" class="down btn btn-primary">Move down</a>
+  </div>
+  {{/if}}
+  <div class="details-add">
+      <input type="text" name="addPatient" class="addPatient" value="" />
+      <a href="#" class="add btn btn-primary">Add</a>
+  </div>
+  <div class="details-other">
+      <a href="#" class="repair btn btn-success">Repair</a>
+      <a href="#" class="reset btn btn-danger">Reset</a>
+  </div>
+</template>
+
+<template name="patient">
+  <li class="patient {{active}}" data-id="{{_id}}">
+      <a href="#">
+          <span class="position">{{position}}.</span>
+          <span class="name">{{name}}</span>
+          <span class="delete">X</span>
+      </a>
+  </li>
+</template>
