@@ -14,11 +14,12 @@ Meteor.publish("patients", function (institution) {
 
 Meteor.methods({
 	create_patient: function(name,position,institution) {
-			console.log("CREATING USER");
-			console.log(this.userId);
-			var patient_id = Patients.insert({name: name,position: position, institution: institution});
-			return patient_id;
+        var patient_id = Patients.insert({name: name,position: position, institution: institution});
+        return patient_id;
 	},
+    update_patient: function(id,position){
+        Patients.update(id, {$set:{position:position}});
+    },
 	empty: null // To avoid adding, removing comas for last item
 });
 

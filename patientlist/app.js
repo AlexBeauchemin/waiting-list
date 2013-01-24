@@ -133,7 +133,9 @@ function bindEvents(){
 
 function updatePatients(){
     $('.patient').each(function(index,patient){
-        Patients.update($(patient).data('id'), {$set:{position:index + 1}});
+        Meteor.call("update_patient", $(patient).data('id'), index+1, function(error, patient_id) {
+            outputErrors(error);
+        });
     });
 }
 
