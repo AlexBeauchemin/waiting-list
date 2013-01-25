@@ -7,23 +7,23 @@
 
   {{#if selected_name}}
   <div class="details-up-down">
-      <a href="#" class="up btn btn-primary">Move up</a>
-      <a href="#" class="down btn btn-primary">Move down</a>
+      <a href="#" class="no-link btn btn-primary up">Move up</a>
+      <a href="#" class="no-link btn btn-primary down">Move down</a>
   </div>
   {{/if}}
   <div class="details-add">
       <input type="text" name="addPatient" class="addPatient" value="" />
-      <a href="#" class="add btn btn-primary">Add</a>
+      <a href="#" class="no-link btn btn-primary add">Add</a>
   </div>
   <div class="details-other">
-      <a href="#" class="repair btn btn-success">Repair</a>
-      <a href="#" class="reset btn btn-danger">Reset</a>
+      <a href="#" class="no-link btn btn-success repair">Repair</a>
+      <a href="#" class="no-link btn btn-danger reset">Reset</a>
   </div>
 </template>
 
 <template name="patient">
   <li class="patient {{active}}" data-id="{{_id}}">
-      <a href="#">
+      <a href="#" class="no-link">
           <span class="position">{{position}}.</span>
           <span class="name">{{name}}</span>
           <span class="delete">X</span>

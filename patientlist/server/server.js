@@ -11,6 +11,15 @@ Meteor.publish("patients", function (institution) {
 //METHODS
 
 Meteor.methods({
+	create_institution: function(name,userId) {
+		var user = Meteor.users.find({_id: userId});
+		if(!user)
+			return "You need to be logged in";
+		if(!name)
+			return "The name of the institution cannot be empty.";
+		Institutions.insert({name: name,users: [userId]});
+		return false;
+	},
 	create_patient:function (name, position, institution) {
 		//TODO: Verify if user is admin of the institudion
 		var patient_id = Patients.insert({name:name, position:position, institution:institution});
@@ -21,6 +30,15 @@ Meteor.methods({
 		Patients.update(id, {$set:{position:position}});
 	},
 	empty:null // To avoid adding, removing comas for last item
+});
+
+//Validations for account creation
+Accounts.validateNewUser(function (user) {
+	var email = user.emails[0].address;
+	var re = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+	if(email.length < 3 || !re.test(email)) throw new Meteor.Error(403, "Email address is invalid");
+	//TODO: Validate password length?
+	return true;
 });
 
 

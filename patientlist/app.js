@@ -6,7 +6,9 @@ if (Meteor.isClient) {
 
 	//VARS
 	var isLoginVisible = false;
-	Session.set('loginState',{create:true,login:false,retrieve:false});
+	var spinner = null;
+	Session.set('loginState',"login");
+
 
 	//SUBSCRIPTIONS
 	Meteor.subscribe('institutions', null, function () {
@@ -19,12 +21,16 @@ if (Meteor.isClient) {
 
 
 	//FEED TEMPLATES
-	Template.login.state = function () {
-		return Session.get("loginState");
+	Template.login.stateIs = function (state) {
+		return state === Session.get("loginState");
 	};
 
 	Template.institutionslist.institutions = function () {
 		return Institutions.find({}, {sort:{name:1}});
+	};
+
+	Template.institutionslist.user = function() {
+		return Meteor.user();
 	};
 
 	Template.patientlist.patients = function () {
@@ -47,47 +53,53 @@ if (Meteor.isClient) {
 
 	//EVENTS
 	Template.header.events({
-		'click .login':function () {
-			if (!isLoginVisible) {
-				isLoginVisible = true;
-				$('.container-main').stop(true, false).slideToggle('fast', function () {
-					$('.container-login').stop(true, false).slideToggle('fast');
-				});
-			}
-			else {
-				isLoginVisible = false;
-				$('.container-login').stop(true, false).slideToggle('fast', function () {
-					$('.container-main').stop(true, false).slideToggle('fast');
-				});
-			}
+		'click .login':function() {
+			switchLoginScreen();
+		},
+		'click .logout': function() {
+			Meteor.logout(function(error){
+				if(error) outputErrors(error);
+			});
 		}
 	});
 
 	Template.login.events({
 		'click .switch-create': function(){
-			Session.set('loginState',{create:true,login:false,retrieve:false});
+			Session.set('loginState',"create");
 		},
 		'click .switch-login': function(){
-			Session.set('loginState',{create:false,login:true,retrieve:false});
+			Session.set('loginState',"login");
 		},
 		'click .switch-retrieve': function(){
-			Session.set('loginState',{create:false,login:false,retrieve:true});
+			Session.set('loginState',"retrieve");
 		},
 		'click .btn': function(){
-			var state = Session.get('loginState');
-			if(state.create){
-				var email = $('')
-				Accounts.createUser({email:'',password:''},function(error){
-					if(error)
-						console.log(error);
-				})
+			var state = Session.get('loginState'),
+					email = $('.container-login .login-email').val(),
+					name = $('.container-login .login-name').val(),
+					password = $('.container-login .login-password').val();
+
+			if(state=="create"){
+				createAccount(name,email,password);
 			}
-			if(state.login){
+			else if(state=="login"){
+				Meteor.loginWithPassword({email:email}, password, function(error){
+					if(error) outputErrors(error);
+					//TODO: Show success message
+				});
+			}
+			else if(state=="retrieve"){
 
 			}
-			if(state.retrieve){
+		}
+	});
 
-			}
+	Template.institutionslist.events({
+		'click .btn-add-instution': function(){
+			var name = $('input.institution-name').val();
+			Meteor.call("create_institution", name, Meteor.userId, function (error) {
+				outputErrors(error);
+			});
 		}
 	});
 
@@ -152,10 +164,6 @@ if (Meteor.isClient) {
 	};
 }
 
-
-
-
-
 function bindEvents() {
 	$(".patientlist").sortable({
 		start:function (event, ui) {
@@ -166,10 +174,31 @@ function bindEvents() {
 		}
 	});
 
-	$('body').on('click', '.patient a,a.btn, container-login .more a, .navbar-link.login', function () {
+	$('body').on('click', '.no-link', function () {
 		event.stopPropagation();
 		return false;
 	});
+}
+
+function createAccount(name,email,password){
+	if(!password || password.length<5)
+		outputErrors("Your password needs to be at least 5 characters.");
+	else {
+		$('.container-login .btn').hide();
+		var spinner = addSpinner($('.container-login .loading')[0]);
+		Accounts.createUser({email:email,password:password},function(error){
+			$('.container-login .btn').show();
+			spinner.stop();
+			if(error) outputErrors(error);
+			else {
+				Meteor.loginWithPassword({email:email}, password, function(error){
+					if(error) outputErrors(error);
+				});
+				//TODO: Show success message
+				switchLoginScreen();
+			}
+		});
+	}
 }
 
 
@@ -188,8 +217,56 @@ function deleteCollections() {
 	});
 }
 
+function addSpinner(el){
+	//DOM is constantly refreshed by meteor , so we need to create a new spinner everytime, otherwise we get strange behaviors
+	spinner = new Spinner(spinner_opts).spin();
+	$(el).append(spinner.el);
+	return spinner;
+}
+
+function switchLoginScreen(){
+	if (!isLoginVisible) {
+		isLoginVisible = true;
+		$('.container-main').stop(true, false).slideToggle('fast', function () {
+			$('.container-login').stop(true, false).slideToggle('fast');
+		});
+	}
+	else {
+		isLoginVisible = false;
+		$('.container-login').stop(true, false).slideToggle('fast', function () {
+			$('.container-main').stop(true, false).slideToggle('fast');
+		});
+	}
+}
+
 function outputErrors(error) {
 	//TODO: Add environements (dev = show errors , prod = hide errors);
-	if(error)
-		console.log(error);
+	//TODO: Output the error to the screen
+	if(error) {
+		if(error.reason) // Account creation error
+			console.log(error.reason);
+		else
+			console.log(error);
+	}
 }
+
+
+
+
+var spinner_opts = {
+		lines: 11, // The number of lines to draw
+		length: 0, // The length of each line
+		width: 5, // The line thickness
+		radius: 11, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		color: '#000', // #rgb or #rrggbb
+		speed: 1.3, // Rounds per second
+		trail: 54, // Afterglow percentage
+		shadow: true, // Whether to render a shadow
+		hwaccel: true, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '20px', // Top position relative to parent in px
+		left: '20px' // Left position relative to parent in px
+};

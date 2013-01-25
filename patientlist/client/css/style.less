@@ -92,10 +92,36 @@ body {
       padding: 7px 9px;
     }
 
+		.loading {
+			float: left;
+		}
+
+		.login-inputs.login {
+			.login-name {
+				display:none;
+			}
+		}
+
+		.login-inputs.retrieve {
+			.login-name, .login-password {
+				display:none;
+			}
+		}
+
 		.more {
 			float: right;
 			text-align: right;
 		}
   }
 }
+
+.loading {
+	height: 40px;
+	width: 40px;
+	.spinner {
+		margin-left: 18px;
+		margin-top: 18px;
+	}
+}
+
 
