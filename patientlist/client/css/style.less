@@ -10,6 +10,33 @@ body {
     user-select: none;
 }
 
+.alerts {
+  position: fixed;
+  top: 40px;
+  width: 100%;
+  z-index: 1020;
+  ul {
+    list-style: none;
+    margin: 0;
+    width:100%;
+    li {
+      cursor: pointer;
+      text-align:center;
+      padding: 5px 2%;
+      opacity: 0;
+      width: 96%;
+      .close {
+        background: url('/glyphicons-halflings.png') 156px 0px;
+        display: inline-block;
+        height: 12px;
+        margin-top: 3px;
+        opacity: 1;
+        width: 14px;
+      }
+    }
+  }
+}
+
 
 .delete {
     color: red;

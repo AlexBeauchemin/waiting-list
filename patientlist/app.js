@@ -1,10 +1,13 @@
 Patients = new Meteor.Collection("patients");
 Institutions = new Meteor.Collection("institutions");
+AllUsers = new Meteor.Collection("allUsers");
+UserData = new Meteor.Collection("userData");
 
 //CLIENT ACTIONS
 if (Meteor.isClient) {
 
 	//VARS
+    var currentPage = "main";
 	var isLoginVisible = false;
 	var spinner = null;
 	Session.set('loginState',"login");
@@ -16,8 +19,12 @@ if (Meteor.isClient) {
 		Session.set("current_institution", Institutions.find({}, {sort:{name:1}, limit:1}).fetch()[0]._id);
 		Meteor.autosubscribe(function () {
 			Meteor.subscribe('patients', Session.get("current_institution"));
+            Meteor.subscribe('allUsers',null , function() { console.log(Meteor.users.find().fetch()) }); //TODO: For testing only, remove this
+            Meteor.subscribe('userData', null, function() { console.log(Meteor.user().profile)});
 		});
 	});
+
+
 
 
 	//FEED TEMPLATES
@@ -54,13 +61,17 @@ if (Meteor.isClient) {
 	//EVENTS
 	Template.header.events({
 		'click .login':function() {
-			switchLoginScreen();
+			changePage('login');
 		},
 		'click .logout': function() {
-			Meteor.logout(function(error){
-				if(error) outputErrors(error);
-			});
-		}
+            console.log(Meteor.user());
+//			Meteor.logout(function(error){
+//				if(error) outputErrors(error);
+//			});
+		},
+        'click .brand, click .main': function(){
+            changePage('main');
+        }
 	});
 
 	Template.login.events({
@@ -97,7 +108,7 @@ if (Meteor.isClient) {
 	Template.institutionslist.events({
 		'click .btn-add-instution': function(){
 			var name = $('input.institution-name').val();
-			Meteor.call("create_institution", name, Meteor.userId, function (error) {
+			Meteor.call("create_institution", name, function (error) {
 				outputErrors(error);
 			});
 		}
@@ -178,6 +189,14 @@ function bindEvents() {
 		event.stopPropagation();
 		return false;
 	});
+    $('body').on('click', '.alerts li', function() {
+        $(this).stop(true,false).animate({
+            opacity: 0,
+            height: 0
+        }, 500, function(){
+            $(this).remove();
+        });
+    })
 }
 
 function createAccount(name,email,password){
@@ -186,7 +205,7 @@ function createAccount(name,email,password){
 	else {
 		$('.container-login .btn').hide();
 		var spinner = addSpinner($('.container-login .loading')[0]);
-		Accounts.createUser({email:email,password:password},function(error){
+		Accounts.createUser({email:email,password:password, profile: {name: name}},function(error){
 			$('.container-login .btn').show();
 			spinner.stop();
 			if(error) outputErrors(error);
@@ -195,7 +214,7 @@ function createAccount(name,email,password){
 					if(error) outputErrors(error);
 				});
 				//TODO: Show success message
-				switchLoginScreen();
+				changePage('main');
 			}
 		});
 	}
@@ -219,34 +238,49 @@ function deleteCollections() {
 
 function addSpinner(el){
 	//DOM is constantly refreshed by meteor , so we need to create a new spinner everytime, otherwise we get strange behaviors
+    //TODO: use template preserve ?
 	spinner = new Spinner(spinner_opts).spin();
 	$(el).append(spinner.el);
 	return spinner;
 }
 
-function switchLoginScreen(){
-	if (!isLoginVisible) {
-		isLoginVisible = true;
-		$('.container-main').stop(true, false).slideToggle('fast', function () {
-			$('.container-login').stop(true, false).slideToggle('fast');
-		});
-	}
-	else {
-		isLoginVisible = false;
-		$('.container-login').stop(true, false).slideToggle('fast', function () {
-			$('.container-main').stop(true, false).slideToggle('fast');
-		});
-	}
+function changePage(newPage){
+    if(newPage != currentPage){
+        var oldPage = currentPage;
+        $('.container-' + oldPage).stop(true, false).slideToggle('fast', function () {
+            $('.container-' + newPage).stop(true, false).slideToggle('fast');
+        });
+        currentPage = newPage;
+    }
 }
 
 function outputErrors(error) {
 	//TODO: Add environements (dev = show errors , prod = hide errors);
 	//TODO: Output the error to the screen
+    var msg = "";
 	if(error) {
 		if(error.reason) // Account creation error
-			console.log(error.reason);
+			msg = error.reason;
 		else
-			console.log(error);
+			msg = error;
+        $('.alerts ul').append('<li class="btn-danger">' + msg + '<span class="close"></span></li>');
+        var item = $('.alerts li').last();
+        var height = item.height();
+        item.css({'height':0});
+        item.animate({
+            opacity: 1,
+            height: height
+        }, 500, function() {
+            setTimeout(function(){
+                item.animate({
+                    opacity: 0,
+                    height: 0
+                }, 500, function(){
+                    item.remove();
+                });
+            },5000);
+        });
+
 	}
 }
 
@@ -270,3 +304,6 @@ var spinner_opts = {
 		top: '20px', // Top position relative to parent in px
 		left: '20px' // Left position relative to parent in px
 };
+
+
+//TODO: http://www.abitibiexpress.ca/Soci%C3%A9t%C3%A9/Sant%C3%A9/2013-01-15/article-3156769/Lurgence-du-CSSSRN-un-modele-pour-le-reste-du-Quebec/1

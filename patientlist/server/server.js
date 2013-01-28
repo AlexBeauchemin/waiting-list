@@ -6,28 +6,44 @@ Meteor.publish("institutions", function () {
 Meteor.publish("patients", function (institution) {
 	return Patients.find({institution:institution});
 });
+Meteor.publish("userData", function () {
+    return Meteor.users.find({_id: this.userId},
+        {fields: {'profile': 1}});
+});
+Meteor.publish("allUsers", function () {
+    //TODO: For testing only, remove this
+    return Meteor.users.find({}, {fields: {'profile': 1}});
+});
 
 
 //METHODS
 
 Meteor.methods({
-	create_institution: function(name,userId) {
-		var user = Meteor.users.find({_id: userId});
+	create_institution: function(name) {
+        var user = this.userId;
 		if(!user)
-			return "You need to be logged in";
+            throw new Meteor.Error(403, "Email address is invalid");
 		if(!name)
-			return "The name of the institution cannot be empty.";
+            throw new Meteor.Error(403, "Email address is invalid");
+        //TODO: Verify if the name already exists
 		Institutions.insert({name: name,users: [userId]});
 		return false;
 	},
 	create_patient:function (name, position, institution) {
+        var user = this.userId;
 		//TODO: Verify if user is admin of the institudion
 		var patient_id = Patients.insert({name:name, position:position, institution:institution});
 		return patient_id;
 	},
 	update_patient:function (id, position) {
+        var user = this.userId;
 		//TODO: Verify if user is admin of the institution
 		Patients.update(id, {$set:{position:position}});
+	},
+    delete_patient:function (id, institution) {
+        var user = this.userId;
+		//TODO: Verify if user is admin of the institution
+		Patients.remove(id);
 	},
 	empty:null // To avoid adding, removing comas for last item
 });
@@ -39,6 +55,12 @@ Accounts.validateNewUser(function (user) {
 	if(email.length < 3 || !re.test(email)) throw new Meteor.Error(403, "Email address is invalid");
 	//TODO: Validate password length?
 	return true;
+});
+
+Accounts.onCreateUser(function(options, user) {
+    if(options.profile.name.length<2)
+        throw new Meteor.Error(403, "Please provide a name.");
+    return user;
 });
 
 

@@ -1,5 +1,13 @@
 <template name="institutionslist">
 	{{#if user}}
+        <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <li class="nav-header">My institutions</li>
+                {{#each my_institutions}}
+                {{> institution}}
+                {{/each}}
+            </ul>
+        </div>
 		<input type="text" class="institution-name" /><input type="submit" class="btn btn-primary no-link btn-add-instution" value="Add"/>
 	{{/if}}
 	<div class="well sidebar-nav">
