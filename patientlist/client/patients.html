@@ -5,20 +5,21 @@
     {{/each}}
   </ul>
 
-  {{#if selected_name}}
-  <div class="details-up-down">
-      <a href="#" class="no-link btn btn-primary up">Move up</a>
-      <a href="#" class="no-link btn btn-primary down">Move down</a>
-  </div>
+  {{#if isAdmin}}
+      {{#if selected_name}}
+      <div class="details-up-down">
+          <a href="#" class="no-link btn btn-primary up">Move up</a>
+          <a href="#" class="no-link btn btn-primary down">Move down</a>
+      </div>
+      {{/if}}
+      <div class="details-add">
+          <input type="text" name="addPatient" class="addPatient" value="" />
+          <a href="#" class="no-link btn btn-primary add">Add</a>
+      </div>
+      <div class="details-other">
+          <a href="#" class="no-link btn btn-success repair">Repair</a>
+      </div>
   {{/if}}
-  <div class="details-add">
-      <input type="text" name="addPatient" class="addPatient" value="" />
-      <a href="#" class="no-link btn btn-primary add">Add</a>
-  </div>
-  <div class="details-other">
-      <a href="#" class="no-link btn btn-success repair">Repair</a>
-      <a href="#" class="no-link btn btn-danger reset">Reset</a>
-  </div>
 </template>
 
 <template name="patient">

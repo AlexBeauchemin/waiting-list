@@ -22,11 +22,12 @@ Meteor.methods({
 	create_institution: function(name) {
         var user = this.userId;
 		if(!user)
-            throw new Meteor.Error(403, "Email address is invalid");
+            throw new Meteor.Error(403, "You need to be logged in to add an institution.");
 		if(!name)
-            throw new Meteor.Error(403, "Email address is invalid");
+            throw new Meteor.Error(403, "You need to provide a name for the institution.");
         //TODO: Verify if the name already exists
-		Institutions.insert({name: name,users: [userId]});
+		var institution = Institutions.insert({name: name,users: [this.userId]});
+        //TODO: Insert institution id in user profile
 		return false;
 	},
 	create_patient:function (name, position, institution) {
@@ -60,6 +61,8 @@ Accounts.validateNewUser(function (user) {
 Accounts.onCreateUser(function(options, user) {
     if(options.profile.name.length<2)
         throw new Meteor.Error(403, "Please provide a name.");
+    if (options.profile)
+        user.profile = options.profile;
     return user;
 });
 

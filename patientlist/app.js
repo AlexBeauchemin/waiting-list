@@ -19,8 +19,8 @@ if (Meteor.isClient) {
 		Session.set("current_institution", Institutions.find({}, {sort:{name:1}, limit:1}).fetch()[0]._id);
 		Meteor.autosubscribe(function () {
 			Meteor.subscribe('patients', Session.get("current_institution"));
-            Meteor.subscribe('allUsers',null , function() { console.log(Meteor.users.find().fetch()) }); //TODO: For testing only, remove this
-            Meteor.subscribe('userData', null, function() { console.log(Meteor.user().profile)});
+            Meteor.subscribe('allUsers',null , function() { console.log('Allusers:',Meteor.users.find().fetch()) }); //TODO: For testing only, remove this
+            Meteor.subscribe('userData', null, function() { console.log('Userdata:',Meteor.user().profile)});
 		});
 	});
 
@@ -49,6 +49,13 @@ if (Meteor.isClient) {
 		return patient && patient.name;
 	};
 
+    Template.patientlist.isAdmin = function(){
+        var institution = Institutions.findOne({_id:Session.get('current_institution')});
+        if(!institution || !institution.users)
+            return false;
+        return ($.inArray(Meteor.user()._id,institution.users) != -1);
+    };
+
 	Template.patient.active = function () {
 		return Session.equals("selected_patient", this._id) ? "active" : '';
 	};
@@ -64,10 +71,9 @@ if (Meteor.isClient) {
 			changePage('login');
 		},
 		'click .logout': function() {
-            console.log(Meteor.user());
-//			Meteor.logout(function(error){
-//				if(error) outputErrors(error);
-//			});
+			Meteor.logout(function(error){
+				if(error) outputErrors(error);
+			});
 		},
         'click .brand, click .main': function(){
             changePage('main');
