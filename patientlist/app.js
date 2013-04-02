@@ -33,7 +33,20 @@ if (Meteor.isClient) {
 	};
 
 	Template.institutionslist.institutions = function () {
-		return Institutions.find({}, {sort:{name:1}});
+        var user = Meteor.user();
+        if(user) {
+            return Institutions.find({"users": {$ne: user._id}}, {sort:{name:1}});
+        }
+        else {
+            return Institutions.find({sort:{name:1}});
+        }
+	};
+    Template.institutionslist.myInstitutions = function () {
+        var user = Meteor.user();
+//		return Institutions.find({ $not: { users:  Meteor.user()._id }}, {sort:{name:1}});
+        if(user)
+		    return Institutions.find({users: user._id}, {sort:{name:1}});
+        return "";
 	};
 
 	Template.institutionslist.user = function() {
@@ -77,6 +90,9 @@ if (Meteor.isClient) {
 		},
         'click .brand, click .main': function(){
             changePage('main');
+        },
+        'click .create': function(){
+            changePage('create-institution');
         }
 	});
 
@@ -111,8 +127,8 @@ if (Meteor.isClient) {
 		}
 	});
 
-	Template.institutionslist.events({
-		'click .btn-add-instution': function(){
+	Template.createInstitution.events({
+		'click .btn-add-institution': function(){
 			var name = $('input.institution-name').val();
 			Meteor.call("create_institution", name, function (error) {
 				outputErrors(error);
@@ -129,7 +145,7 @@ if (Meteor.isClient) {
 
 	Template.patient.events({
 		'click .delete':function () {
-			Patients.remove({_id:this._id});
+            Meteor.call('delete_patient',this._id, Session.get("current_institution"));
 			updatePatients();
 		}
 	});
@@ -181,28 +197,52 @@ if (Meteor.isClient) {
 	};
 }
 
+
+
+
+
+
+
+
+
+
+
+
+var eventsBinded = false;
+
 function bindEvents() {
-	$(".patientlist").sortable({
-		start:function (event, ui) {
-
-		},
-		update:function (event, ui) {
-			updatePatients();
-		}
-	});
-
-	$('body').on('click', '.no-link', function () {
-		event.stopPropagation();
-		return false;
-	});
-    $('body').on('click', '.alerts li', function() {
-        $(this).stop(true,false).animate({
-            opacity: 0,
-            height: 0
-        }, 500, function(){
-            $(this).remove();
+    var patients_container = $(".patientlist.sortable");
+    if(patients_container.length) {
+        patients_container.sortable({
+            update:function (event, ui) {
+                updatePatients();
+            }
         });
-    })
+    }
+
+    if(eventsBinded == false) {
+        $('body').on('click', '.no-link', function () {
+            event.stopPropagation();
+            return false;
+        });
+        $('body').on('click', '.alerts li', function() {
+            $(this).stop(true,false).animate({
+                opacity: 0,
+                height: 0
+            }, 500, function(){
+                $(this).remove();
+            });
+        })
+        eventsBinded = true;
+    }
+}
+
+function applySortable() {
+    $(".patientlist").sortable({
+        update:function (event, ui) {
+            updatePatients();
+        }
+    });
 }
 
 function createAccount(name,email,password){
@@ -228,11 +268,12 @@ function createAccount(name,email,password){
 
 
 function updatePatients() {
-	$('.patient').each(function (index, patient) {
-		Meteor.call("update_patient", $(patient).data('id'), index + 1, function (error, patient_id) {
-			outputErrors(error);
-		});
-	});
+    var patients = $('.patientlist .patient');
+    $.each(patients,function (index, patient) {
+        Meteor.call("update_patient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
+            outputErrors(error);
+        });
+    });
 }
 
 function deleteCollections() {
@@ -313,3 +354,4 @@ var spinner_opts = {
 
 
 //TODO: http://www.abitibiexpress.ca/Soci%C3%A9t%C3%A9/Sant%C3%A9/2013-01-15/article-3156769/Lurgence-du-CSSSRN-un-modele-pour-le-reste-du-Quebec/1
+//TODO: add hidden field to avoid bot subscriptions

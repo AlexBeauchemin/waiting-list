@@ -7,20 +7,20 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
 	            </a>
-	            <a class="brand" href="#">Project name</a>
+	            <a class="brand" href="#">WhenIsMyTurn.com</a>
 
 	            <div class="nav-collapse collapse">
 	                <p class="navbar-text pull-right">
 						{{#if currentUser}}
-							Welcome User! | <a href="#" class="logout">Log out</a>
+							Welcome {{currentUser.profile.name}} | <a href="#" class="logout">Log out</a>
 						{{else}}
 							<a href="#" class="no-link navbar-link login">Log in</a>
 						{{/if}}
 	                </p>
 	                <ul class="nav">
 	                    <li class="main active"><a href="#">Home</a></li>
-	                    <li><a href="#about">About</a></li>
-	                    <li><a href="#contact">Contact</a></li>
+	                    <li class="create"><a href="#">Create institution</a></li>
+	                    <li><a href="#">About</a></li>
 	                </ul>
 	            </div>
 	            <!--/.nav-collapse -->

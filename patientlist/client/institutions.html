@@ -1,22 +1,17 @@
 <template name="institutionslist">
-	{{#if user}}
-        <div class="well sidebar-nav">
-            <ul class="nav nav-list">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+	        {{#if user and myInstitutions}}
                 <li class="nav-header">My institutions</li>
-                {{#each my_institutions}}
-                {{> institution}}
+                {{#each myInstitutions}}
+                    {{> institution}}
                 {{/each}}
-            </ul>
-        </div>
-		<input type="text" class="institution-name" /><input type="submit" class="btn btn-primary no-link btn-add-instution" value="Add"/>
-	{{/if}}
-	<div class="well sidebar-nav">
-		<ul class="nav nav-list">
-			<li class="nav-header">Institutions</li>
-			{{#each institutions}}
-				{{> institution}}
-			{{/each}}
-		</ul>
+	        {{/if}}
+            <li class="nav-header">Public institutions</li>
+            {{#each institutions}}
+                {{> institution}}
+            {{/each}}
+        </ul>
 	</div>
 </template>
 

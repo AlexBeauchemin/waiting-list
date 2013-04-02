@@ -69,16 +69,34 @@ body {
 }
 
 .patientlist {
-    font-size:200%;
+  font-size:200%;
 }
 
 .position {
-    color: grey;
+  color: grey;
 }
 
 
 .inc {
   cursor: pointer;
+}
+
+
+
+
+
+// HEADER
+
+.navbar-fixed-top {
+  .navbar-inner {
+    .container-fluid {
+      a.brand {
+        left: 50%;
+        margin-left: -107px;
+        position: absolute;
+      }
+    }
+  }
 }
 
 
@@ -142,6 +160,19 @@ body {
   }
 }
 
+
+
+
+// ADD INSTITUTIONS
+.container-create-institution {
+  display: none;
+}
+
+
+
+
+
+
 .loading {
 	height: 40px;
 	width: 40px;
@@ -149,6 +180,18 @@ body {
 		margin-left: 18px;
 		margin-top: 18px;
 	}
+}
+
+.menu-institutions {
+  .well {
+    padding: 10px 0;
+    .nav {
+      .nav-header {
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+      }
+    }
+  }
 }
 
 

@@ -1,5 +1,5 @@
 <template name="patientlist">
-   <ul class="nav nav-list patientlist">
+   <ul class="nav nav-list patientlist {{#if isAdmin}}sortable{{/if}}">
     {{#each patients}}
       {{> patient}}
     {{/each}}
@@ -8,8 +8,8 @@
   {{#if isAdmin}}
       {{#if selected_name}}
       <div class="details-up-down">
-          <a href="#" class="no-link btn btn-primary up">Move up</a>
-          <a href="#" class="no-link btn btn-primary down">Move down</a>
+          <a href="#" class="no-link btn btn-inverse up">Move up</a>
+          <a href="#" class="no-link btn btn-inverse down">Move down</a>
       </div>
       {{/if}}
       <div class="details-add">
