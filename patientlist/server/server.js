@@ -10,24 +10,32 @@ Meteor.publish("userData", function () {
     return Meteor.users.find({_id: this.userId},
         {fields: {'profile': 1}});
 });
-Meteor.publish("allUsers", function () {
-    //TODO: For testing only, remove this
-    return Meteor.users.find({}, {fields: {'profile': 1}});
-});
 
 
 //METHODS
 
 Meteor.methods({
-	create_institution: function(name) {
+	create_institution: function(name,isPrivate) {
         var user = this.userId;
 		if(!user)
             throw new Meteor.Error(403, "You need to be logged in to add an institution.");
 		if(!name)
             throw new Meteor.Error(403, "You need to provide a name for the institution.");
-        //TODO: Verify if the name already exists
-		var institution = Institutions.insert({name: name, owner:[this.userId], users: [this.userId]});
-        //TODO: Insert institution id in user profile
+        var name_exists = Institutions.findOne({name: name});
+
+        if(name_exists)
+            throw new Meteor.Error(403, "There is already an institution with this name : " + name);
+
+		var institution = Institutions.insert({name: name, owner:[user], users: [user], private: isPrivate});
+        var profile = Meteor.user().profile;
+        var institutions = [institution];
+        if(profile.institutions) {
+            profile.institutions.push(institution);
+            institutions = profile.institutions;
+        }
+
+        Meteor.users.update({_id:user}, {$set:{"profile.institutions":institutions}});
+
 		return false;
 	},
 	create_patient:function (name, position, institution) {

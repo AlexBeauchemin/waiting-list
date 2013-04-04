@@ -10,6 +10,10 @@ body {
     user-select: none;
 }
 
+h2 {
+  text-align: center;
+}
+
 .alerts {
   position: fixed;
   top: 40px;
@@ -39,9 +43,10 @@ body {
 
 
 .delete {
-    color: red;
-    float: right;
-    text-align: right;
+  color: red;
+  display: none;
+  float: right;
+  text-align: right;
 }
 
 .details-add {
@@ -51,6 +56,8 @@ body {
 }
 
 .nav-list > li.patient {
+  border-bottom: 1px solid #ddd;
+
   &.active {
     a {
       .position {
@@ -63,13 +70,18 @@ body {
   }
   a {
     display: block;
-    margin: 5px 0;
-    padding: 10px;
+    padding: 15px;
   }
 }
 
 .patientlist {
   font-size:200%;
+
+  &.sortable {
+    .delete {
+      display:block;
+    }
+  }
 }
 
 .position {
@@ -137,26 +149,26 @@ body {
       padding: 7px 9px;
     }
 
-		.loading {
-			float: left;
-		}
+    .loading {
+        float: left;
+    }
 
-		.login-inputs.login {
-			.login-name {
-				display:none;
-			}
-		}
+    .login-inputs.login {
+        .login-name {
+            display:none;
+        }
+    }
 
-		.login-inputs.retrieve {
-			.login-name, .login-password {
-				display:none;
-			}
-		}
+    .login-inputs.retrieve {
+        .login-name, .login-password {
+            display:none;
+        }
+    }
 
-		.more {
-			float: right;
-			text-align: right;
-		}
+    .more {
+        float: right;
+        text-align: right;
+    }
   }
 }
 
@@ -166,11 +178,30 @@ body {
 // ADD INSTITUTIONS
 .container-create-institution {
   display: none;
+
+  .row-fluid {
+    p.discret {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  .btn {
+    vertical-align: top;
+  }
+
+  .radio {
+    float: left;
+    margin-right: 10px;
+  }
 }
 
 
 
-
+.discret {
+  color: #999;
+  font-size: 10px;
+}
 
 
 .loading {

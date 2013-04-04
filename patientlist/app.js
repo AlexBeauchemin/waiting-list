@@ -1,6 +1,5 @@
 Patients = new Meteor.Collection("patients");
 Institutions = new Meteor.Collection("institutions");
-AllUsers = new Meteor.Collection("allUsers");
 UserData = new Meteor.Collection("userData");
 
 //CLIENT ACTIONS
@@ -19,7 +18,6 @@ if (Meteor.isClient) {
 		Session.set("current_institution", Institutions.find({}, {sort:{name:1}, limit:1}).fetch()[0]._id);
 		Meteor.autosubscribe(function () {
 			Meteor.subscribe('patients', Session.get("current_institution"));
-            Meteor.subscribe('allUsers',null , function() { console.log('Allusers:',Meteor.users.find().fetch()) }); //TODO: For testing only, remove this
             Meteor.subscribe('userData', null, function() { console.log('Userdata:',Meteor.user().profile)});
 		});
 	});
@@ -62,6 +60,13 @@ if (Meteor.isClient) {
 		return patient && patient.name;
 	};
 
+    Template.patientlist.institution_name = function () {
+		var institution = Institutions.findOne({_id:Session.get('current_institution')});
+        if(institution)
+		    return institution.name;
+        return "";
+	};
+
     Template.patientlist.isAdmin = function(){
         var institution = Institutions.findOne({_id:Session.get('current_institution')});
         if(!institution || !institution.users)
@@ -80,18 +85,22 @@ if (Meteor.isClient) {
 
 	//EVENTS
 	Template.header.events({
-		'click .login':function() {
+		'click .login':function(event) {
 			changePage('login');
 		},
-		'click .logout': function() {
+		'click .logout': function(event) {
 			Meteor.logout(function(error){
 				if(error) outputErrors(error);
 			});
 		},
-        'click .brand, click .main': function(){
+        'click .brand, click .main': function(event){
+            $('.navbar .nav li').removeClass('active');
+            $('.navbar .nav li.main').addClass('active');
             changePage('main');
         },
-        'click .create': function(){
+        'click .create': function(event){
+            $('.navbar .nav li').removeClass('active');
+            $('.navbar .nav li.create').addClass('active');
             changePage('create-institution');
         }
 	});
@@ -130,8 +139,16 @@ if (Meteor.isClient) {
 	Template.createInstitution.events({
 		'click .btn-add-institution': function(){
 			var name = $('input.institution-name').val();
-			Meteor.call("create_institution", name, function (error) {
-				outputErrors(error);
+            var isPrivate = $('input[name=private]:checked').val();
+			Meteor.call("create_institution", name, isPrivate, function (error) {
+                if(error) {
+                    outputErrors(error);
+                }
+                else {
+                    changePage('main');
+                    outputSuccess('New institution created.');
+                }
+
 			});
 		}
 	});
@@ -312,23 +329,34 @@ function outputErrors(error) {
 			msg = error;
         $('.alerts ul').append('<li class="btn-danger">' + msg + '<span class="close"></span></li>');
         var item = $('.alerts li').last();
-        var height = item.height();
-        item.css({'height':0});
-        item.animate({
-            opacity: 1,
-            height: height
-        }, 500, function() {
-            setTimeout(function(){
-                item.animate({
-                    opacity: 0,
-                    height: 0
-                }, 500, function(){
-                    item.remove();
-                });
-            },5000);
-        });
 
+        animateOutput(item);
 	}
+}
+
+function outputSuccess(msg) {
+    $('.alerts ul').append('<li class="btn-success">' + msg + '<span class="close"></span></li>');
+    var item = $('.alerts li').last();
+
+    animateOutput(item);
+}
+
+function animateOutput(item) {
+    var height = item.height();
+    item.css({'height':0});
+    item.animate({
+        opacity: 1,
+        height: height
+    }, 500, function() {
+        setTimeout(function(){
+            item.animate({
+                opacity: 0,
+                height: 0
+            }, 500, function(){
+                item.remove();
+            });
+        },5000);
+    });
 }
 
 
