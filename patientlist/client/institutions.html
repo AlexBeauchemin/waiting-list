@@ -1,11 +1,15 @@
 <template name="institutionslist">
     <div class="well sidebar-nav">
         <ul class="nav nav-list">
-	        {{#if user and myInstitutions}}
-                <li class="nav-header">My institutions</li>
-                {{#each myInstitutions}}
-                    {{> institution}}
-                {{/each}}
+	        {{#if user}}
+				{{#with myInstitutions}}
+					{{#if count}}
+						<li class="nav-header">My institutions</li>
+						{{#each this}}
+							{{> institution}}
+						{{/each}}
+					{{/if}}
+				{{/with}}
 	        {{/if}}
             <li class="nav-header">Public institutions</li>
             {{#each institutions}}

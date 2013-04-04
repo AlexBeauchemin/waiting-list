@@ -18,7 +18,10 @@ if (Meteor.isClient) {
 		Session.set("current_institution", Institutions.find({}, {sort:{name:1}, limit:1}).fetch()[0]._id);
 		Meteor.autosubscribe(function () {
 			Meteor.subscribe('patients', Session.get("current_institution"));
-            Meteor.subscribe('userData', null, function() { console.log('Userdata:',Meteor.user().profile)});
+				Meteor.subscribe('userData', null, function() {
+					//console.log('Userdata:',Meteor.user().profile);
+				}
+			);
 		});
 	});
 
@@ -42,8 +45,9 @@ if (Meteor.isClient) {
     Template.institutionslist.myInstitutions = function () {
         var user = Meteor.user();
 //		return Institutions.find({ $not: { users:  Meteor.user()._id }}, {sort:{name:1}});
-        if(user)
-		    return Institutions.find({users: user._id}, {sort:{name:1}});
+        if(user) {
+		    	return Institutions.find({users: user._id}, {sort:{name:1}});
+				}
         return "";
 	};
 

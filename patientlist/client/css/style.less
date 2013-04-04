@@ -56,7 +56,11 @@ h2 {
 }
 
 .nav-list > li.patient {
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+
+	&:first-child {
+		border: none;
+	}
 
   &.active {
     a {
@@ -178,6 +182,7 @@ h2 {
 // ADD INSTITUTIONS
 .container-create-institution {
   display: none;
+	text-align: center;
 
   .row-fluid {
     p.discret {
@@ -191,7 +196,7 @@ h2 {
   }
 
   .radio {
-    float: left;
+		display: inline-block;
     margin-right: 10px;
   }
 }
