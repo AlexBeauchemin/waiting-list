@@ -6,9 +6,9 @@ UserData = new Meteor.Collection("userData");
 if (Meteor.isClient) {
 
 	//VARS
-    var currentPage = "main";
-	var isLoginVisible = false;
-	var spinner = null;
+  var currentPage = "main",
+			spinner = null;
+
 	Session.set('loginState',"login");
 
 
@@ -34,21 +34,22 @@ if (Meteor.isClient) {
 	};
 
 	Template.institutionslist.institutions = function () {
-        var user = Meteor.user();
-        if(user) {
-            return Institutions.find({"users": {$ne: user._id}}, {sort:{name:1}});
-        }
-        else {
-            return Institutions.find({sort:{name:1}});
-        }
+		var user = Meteor.user();
+
+		if(user) {
+				return Institutions.find({"users": {$ne: user._id}}, {sort:{name:1}});
+		}
+
+		return Institutions.find({},{sort:{name:1}});
 	};
-    Template.institutionslist.myInstitutions = function () {
-        var user = Meteor.user();
+
+	Template.institutionslist.myInstitutions = function () {
+		var user = Meteor.user();
 //		return Institutions.find({ $not: { users:  Meteor.user()._id }}, {sort:{name:1}});
-        if(user) {
-		    	return Institutions.find({users: user._id}, {sort:{name:1}});
-				}
-        return "";
+		if(user) {
+			return Institutions.find({users: user._id}, {sort:{name:1}});
+		}
+		return "";
 	};
 
 	Template.institutionslist.user = function() {
@@ -56,7 +57,25 @@ if (Meteor.isClient) {
 	};
 
 	Template.patientlist.patients = function () {
-		return Patients.find({}, {sort:{position:1, name:-1}});
+		var patients = Patients.find({}, {sort:{position:1, name:-1}});
+//				total = patients.count(),
+//				patients_container = $(".patientlist");
+//
+//		console.log(total,patients_container);
+//		if(total>2 && patients_container.length) {
+//			$(".patientlist").addClass('two_columns');
+//		}
+//		else if (patients_container.length) {
+//			$('.patientlist').removeClass('two_columns');
+//		}
+		return patients.fetch();
+//
+//		patients = patients.fetch();
+//
+//		if(total<2)
+//			return patients
+//
+//		return patients.slice(Math.ceil(total/2),patients.length+1);
 	};
 
 	Template.patientlist.selected_name = function () {
@@ -64,19 +83,19 @@ if (Meteor.isClient) {
 		return patient && patient.name;
 	};
 
-    Template.patientlist.institution_name = function () {
+	Template.patientlist.institution_name = function () {
 		var institution = Institutions.findOne({_id:Session.get('current_institution')});
-        if(institution)
-		    return institution.name;
-        return "";
+		if(institution)
+			return institution.name;
+		return "";
 	};
 
-    Template.patientlist.isAdmin = function(){
-        var institution = Institutions.findOne({_id:Session.get('current_institution')});
-        if(!institution || !institution.users)
-            return false;
-        return ($.inArray(Meteor.user()._id,institution.users) != -1);
-    };
+	Template.patientlist.isAdmin = function(){
+		var institution = Institutions.findOne({_id:Session.get('current_institution')});
+		if(!institution || !institution.users)
+				return false;
+		return ($.inArray(Meteor.user()._id,institution.users) != -1);
+	};
 
 	Template.patient.active = function () {
 		return Session.equals("selected_patient", this._id) ? "active" : '';
@@ -97,16 +116,16 @@ if (Meteor.isClient) {
 				if(error) outputErrors(error);
 			});
 		},
-        'click .brand, click .main': function(event){
-            $('.navbar .nav li').removeClass('active');
-            $('.navbar .nav li.main').addClass('active');
-            changePage('main');
-        },
-        'click .create': function(event){
-            $('.navbar .nav li').removeClass('active');
-            $('.navbar .nav li.create').addClass('active');
-            changePage('create-institution');
-        }
+		'click .brand, click .main': function(event){
+				$('.navbar .nav li').removeClass('active');
+				$('.navbar .nav li.main').addClass('active');
+				changePage('main');
+		},
+		'click .create': function(event){
+				$('.navbar .nav li').removeClass('active');
+				$('.navbar .nav li.create').addClass('active');
+				changePage('create-institution');
+		}
 	});
 
 	Template.login.events({
@@ -131,7 +150,10 @@ if (Meteor.isClient) {
 			else if(state=="login"){
 				Meteor.loginWithPassword({email:email}, password, function(error){
 					if(error) outputErrors(error);
-					//TODO: Show success message
+					else {
+						outputSuccess('You are now logged in.');
+						changePage('main');
+					}
 				});
 			}
 			else if(state=="retrieve"){
@@ -142,17 +164,16 @@ if (Meteor.isClient) {
 
 	Template.createInstitution.events({
 		'click .btn-add-institution': function(){
-			var name = $('input.institution-name').val();
-            var isPrivate = $('input[name=private]:checked').val();
+			var name = $('input.institution-name').val(),
+					isPrivate = $('input[name=private]:checked').val();
 			Meteor.call("create_institution", name, isPrivate, function (error) {
-                if(error) {
-                    outputErrors(error);
-                }
-                else {
-                    changePage('main');
-                    outputSuccess('New institution created.');
-                }
-
+				if(error) {
+						outputErrors(error);
+				}
+				else {
+						changePage('main');
+						outputSuccess('New institution created.');
+				}
 			});
 		}
 	});
@@ -214,7 +235,8 @@ if (Meteor.isClient) {
 	});
 
 	Template.patientlist.rendered = function () {
-		bindEvents();
+		renderTemplate();
+		if(!eventsBinded) bindEvents();
 	};
 }
 
@@ -231,31 +253,47 @@ if (Meteor.isClient) {
 
 var eventsBinded = false;
 
-function bindEvents() {
-    var patients_container = $(".patientlist.sortable");
-    if(patients_container.length) {
-        patients_container.sortable({
-            update:function (event, ui) {
-                updatePatients();
-            }
-        });
-    }
+function renderTemplate() {
+	var patients_container = $(".patientlist"),
+			list_rendered = false,
+			total_patients = 0,
+			row_split = 8;
 
-    if(eventsBinded == false) {
-        $('body').on('click', '.no-link', function () {
-            event.stopPropagation();
-            return false;
-        });
-        $('body').on('click', '.alerts li', function() {
-            $(this).stop(true,false).animate({
-                opacity: 0,
-                height: 0
-            }, 500, function(){
-                $(this).remove();
-            });
-        })
-        eventsBinded = true;
-    }
+	if(patients_container.length) {
+		list_rendered = true;
+		total_patients = patients_container.find('li').length;
+	}
+
+	if(list_rendered  && patients_container.hasClass('sortable')) {
+		patients_container.sortable({
+				update:function (event, ui) {
+						updatePatients();
+				}
+		});
+	}
+
+	if(list_rendered  && total_patients > row_split) {
+		patients_container.addClass('two_columns');
+	}
+	else if (list_rendered) {
+		patients_container.removeClass('two_columns');
+	}
+}
+
+function bindEvents() {
+	$('body').on('click', '.no-link', function () {
+			event.stopPropagation();
+			return false;
+	});
+	$('body').on('click', '.alerts li', function() {
+			$(this).stop(true,false).animate({
+					opacity: 0,
+					height: 0
+			}, 500, function(){
+					$(this).remove();
+			});
+	})
+	eventsBinded = true;
 }
 
 function applySortable() {
@@ -271,7 +309,7 @@ function createAccount(name,email,password){
 		outputErrors("Your password needs to be at least 5 characters.");
 	else {
 		$('.container-login .btn').hide();
-		var spinner = addSpinner($('.container-login .loading')[0]);
+		spinner = addSpinner($('.container-login .loading')[0]);
 		Accounts.createUser({email:email,password:password, profile: {name: name}},function(error){
 			$('.container-login .btn').show();
 			spinner.stop();
@@ -281,6 +319,7 @@ function createAccount(name,email,password){
 					if(error) outputErrors(error);
 				});
 				//TODO: Show success message
+				outputSuccess('Your account has been created.');
 				changePage('main');
 			}
 		});
@@ -306,10 +345,10 @@ function deleteCollections() {
 
 function addSpinner(el){
 	//DOM is constantly refreshed by meteor , so we need to create a new spinner everytime, otherwise we get strange behaviors
-    //TODO: use template preserve ?
-	spinner = new Spinner(spinner_opts).spin();
-	$(el).append(spinner.el);
-	return spinner;
+  //TODO: use template preserve ?
+	var new_spinner = new Spinner(spinner_opts).spin();
+	$(el).append(new_spinner.el);
+	return new_spinner;
 }
 
 function changePage(newPage){
