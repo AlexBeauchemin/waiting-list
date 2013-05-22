@@ -1,41 +1,33 @@
 <template name="patientlist">
-   <h2>{{ institution_name }}</h2>
-    <div class="span12">
-        <ul class="nav nav-list patientlist {{#if isAdmin}}sortable{{/if}}">
+    <div class="container-main">
+        <h2>{{ institution_name }} {{#if isAdmin}}<span class="btn btn-dark viewmode">Switch to listview</span>{{/if}}</h2>
+        <ul class="patientlist {{#if isAdmin}}sortable{{/if}}">
             {{#each patients}}
-            	{{> patient}}
+                {{> patient}}
             {{/each}}
         </ul>
-    </div><!--/span-->
 
-  {{#if isAdmin}}
-    <div class="span12 admin_panel">
-		<div class="title">
-			<h4>Admin panel</h4>
-		</div>
-		<div class="well">
-			{{#if selected_name}}
-			<div class="details-up-down">
-				<a href="#" class="no-link btn btn-inverse up">Move up</a>
-				<a href="#" class="no-link btn btn-inverse down">Move down</a>
-			</div>
-			{{/if}}
-			<div class="details-other">
-				<input type="text" name="addPatient" class="addPatient" value="" />
-				<a href="#" class="no-link btn btn-primary add">Add</a>
-				<a href="#" class="no-link btn btn-success repair">Repair</a>
-			</div>
-		</div>
+        {{#if isAdmin}}
+        <div class="admin_panel">
+            <input type="text" name="addPatient" class="addPatient" value="" />
+            <a href="#" class="no-link btn btn-dark add">Add</a>
+            <a href="#" class="no-link btn btn-danger delete">Delete</a>
+            <a href="#" class="no-link btn btn-dark empty">Empty</a>
+        </div>
+        {{/if}}
     </div>
-  {{/if}}
 </template>
 
 <template name="patient">
-  <li class="patient {{active}}" data-id="{{_id}}">
-      <a href="#" class="no-link">
-          <span class="position">{{position}}.</span>
-          <span class="name">{{name}}</span>
-          <span class="delete">X</span>
-      </a>
-  </li>
+    <li class="patient {{active}}" data-id="{{_id}}">
+        <div class="arrows">
+            <div class="sprite arrow-up"></div>
+            <div class="sprite arrow-down"></div>
+        </div>
+        <a href="#" class="no-link">
+            <span class="position">{{position}}.</span>
+            <span class="name">{{name}}</span>
+            <span class="delete">X</span>
+        </a>
+    </li>
 </template>

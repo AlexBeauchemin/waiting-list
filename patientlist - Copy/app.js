@@ -89,7 +89,7 @@ if (Meteor.isClient) {
 
 
 	//EVENTS
-	Template.nav.events({
+	Template.header.events({
 		'click .login':function(event) {
 			changePage('login');
 		},
@@ -98,30 +98,16 @@ if (Meteor.isClient) {
 				if(error) outputErrors(error);
 			});
 		},
-		'click .logo': function(event){
+		'click .brand, click .main': function(event){
             $('.navbar .nav li').removeClass('active');
             $('.navbar .nav li.main').addClass('active');
             changePage('main');
 		},
-        'click .institution': function(event){
-            var target = $(event.target).parent();
-//            if(currentPage == 'create-institution' && !target.hasClass('add')) {
-//                $('.navbar .institutions li.add').removeClass('active');
-//                changePage('main');
-//            }
-//            else if(target.hasClass('add')) {
-//                $('.navbar .institutions li').removeClass('active');
-//                changePage('create-institution');
-//            }
-//            target.addClass('active');
-            if(target.hasClass('add')) {
-                var content = $('.container-create-institution');
-                content.show();
-                $.fancybox({
-                    content: content
-                });
-            }
-        }
+		'click .create': function(event){
+            $('.navbar .nav li').removeClass('active');
+            $('.navbar .nav li.create').addClass('active');
+            changePage('create-institution');
+		}
 	});
 
 	Template.login.events({
@@ -233,34 +219,40 @@ if (Meteor.isClient) {
         'click .viewmode': function(e) {
             if(!viewmode_properties) {
                 viewmode_properties = {
-                    'elTitle': $('.navbar-fixed-top'),
-                    'elMenu': $('.navbar'),
-                    'elContent': $('.content'),
+                    'elHeader': $('.navbar-fixed-top'),
+                    'elMenu': $('.menu-institutions'),
+                    'elFooter':  $('footer'),
                     'elBody': $('body'),
-                    'elLogout': $('.btn.logout'),
-                    'elAdminPanel': $('.admin_panel')
+                    'elList': $('.home .span9')
                 };
+                viewmode_properties.menuWidth = viewmode_properties.elMenu.css('width');
+                viewmode_properties.bodyMarginTop = viewmode_properties.elBody.css('marginTop');
+                viewmode_properties.listWidth = viewmode_properties.elList.css('width');
+                viewmode_properties.listMarginLeft = viewmode_properties.elList.css('marginLeft');
             }
 
             // Switch back to normal mode
             if(viewmode_properties.elBody.hasClass('listview')) {
-                viewmode_properties.elTitle.slideDown();
-                viewmode_properties.elMenu.animate({'left':0});
-                viewmode_properties.elLogout.animate({'left':0});
-                viewmode_properties.elContent.animate({'paddingLeft':270});
-                viewmode_properties.elBody.removeClass('listview');
-                if(viewmode_properties.elAdminPanel)
-                    viewmode_properties.elAdminPanel.slideDown();
+                viewmode_properties.elHeader.slideDown();
+                viewmode_properties.elMenu.animate({'width':viewmode_properties.menuWidth}, function(){
+                    viewmode_properties.elMenu.find('.well.sidebar-nav').removeAttr('style');
+                    viewmode_properties.elMenu.removeAttr('style');
+                });
+                viewmode_properties.elFooter.slideDown();
+                viewmode_properties.elBody.removeClass('listview').animate({'marginTop':viewmode_properties.bodyMarginTop});
+                viewmode_properties.elList.animate({'width':viewmode_properties.listWidth,'marginLeft':viewmode_properties.listMarginLeft}, function(){
+                    viewmode_properties.elList.removeAttr('style');
+                });
+
                 $(e.srcElement).html('Switch to list view');
             //Switch to list mode
             } else {
-                viewmode_properties.elTitle.slideUp();
-                viewmode_properties.elMenu.animate({'left':-250});
-                viewmode_properties.elLogout.animate({'left':-250});
-                viewmode_properties.elContent.animate({'paddingLeft':20});
-                viewmode_properties.elBody.addClass('listview');
-                if(viewmode_properties.elAdminPanel)
-                    viewmode_properties.elAdminPanel.slideUp();
+                viewmode_properties.elHeader.slideUp();
+                viewmode_properties.elMenu.find('.well.sidebar-nav').width(viewmode_properties.elMenu.find('.well.sidebar-nav').width());
+                viewmode_properties.elMenu.animate({'width':0});
+                viewmode_properties.elFooter.slideUp();
+                viewmode_properties.elBody.addClass('listview').animate({'marginTop':20});
+                viewmode_properties.elList.animate({'width':'100%','marginLeft':0});
                 $(e.srcElement).html('Switch to normal view');
             }
 
@@ -279,7 +271,7 @@ if (Meteor.isClient) {
 	};
 
     Meteor.startup(function () {
-        bindEvents();
+        bindEvents()
     });
 }
 
@@ -413,21 +405,12 @@ function addSpinner(el){
 }
 
 function changePage(newPage){
-    if(newPage == "login") {
-        var container = $('.container-' + newPage);
-        container.show();
-        $.fancybox({
-            content: container
+    if(newPage != currentPage){
+        var oldPage = currentPage;
+        $('.container-' + oldPage).stop(true, false).slideToggle('fast', function () {
+            $('.container-' + newPage).stop(true, false).slideToggle('fast');
         });
-    }
-    else {
-        if(newPage != currentPage){
-            var oldPage = currentPage;
-                $('.container-' + oldPage).stop(true, false).slideToggle('fast', function () {
-                    $('.container-' + newPage).stop(true, false).slideToggle('fast');
-                });
-            currentPage = newPage;
-        }
+        currentPage = newPage;
     }
 }
 

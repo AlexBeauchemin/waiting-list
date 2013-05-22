@@ -1,5 +1,16 @@
 <template name="login">
 	<form class="form-signin clearfix">
+		<h2 class="form-signin-heading">
+		{{#if stateIs "create"}}
+			Create an account
+		{{/if}}
+		{{#if stateIs "login"}}
+			Log in
+		{{/if}}
+		{{#if stateIs "retrieve"}}
+			Retrieve your password
+		{{/if}}
+		</h2>
 		{{#if stateIs "create"}}<div class="login-inputs create">{{/if}}
 		{{#if stateIs "login"}}<div class="login-inputs login">{{/if}}
 		{{#if stateIs "retrieve"}}<div class="login-inputs retrieve">{{/if}}
@@ -7,7 +18,7 @@
 			<input type="text" class="input-block-level login-email" placeholder="Email address">
 			<input type="password" class="input-block-level login-password" placeholder="Password" >
 		</div>
-		<button class="no-link btn btn-large btn-blue" type="submit">
+		<button class="no-link btn btn-large btn-primary" type="submit">
 			{{#if stateIs "login"}} Log in {{/if}}
 			{{#if stateIs "create"}} Create {{/if}}
 			{{#if stateIs "retrieve"}} Change password {{/if}}

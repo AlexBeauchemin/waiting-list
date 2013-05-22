@@ -1,0 +1,536 @@
+@import "elements.less";
+@import "vars.less";
+
+* {
+  //general rules , doesn't really affects performances
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+//GENERAL
+
+body {
+  background-color: @colorLight;
+  color: @colorDark;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 200;
+  margin: 0 0 0 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+a {
+  color: @colorBlue;
+
+  &:hover, &:active {
+    color: #06a3f2;
+  }
+}
+
+.left { float:left; }
+.right { float: right; }
+
+h2 {
+  font-size: 45px;
+  padding: 0 0 25px 28px;
+  text-align: left;
+
+  .btn {
+    float: right;
+  }
+}
+
+.alerts {
+  margin-left: -20px;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1020;
+  ul {
+    list-style: none;
+    margin: 0;
+    width:100%;
+    li {
+      cursor: pointer;
+      text-align:center;
+      padding: 5px 2%;
+      opacity: 0;
+      width: 96%;
+      .close {
+        background: url('/glyphicons-halflings.png') 156px 0px;
+        display: inline-block;
+        height: 12px;
+        margin-top: 3px;
+        opacity: 1;
+        width: 14px;
+      }
+    }
+  }
+}
+
+.discret {
+  color: #999;
+  font-size: 10px;
+}
+
+
+.loading {
+  height: 40px;
+  width: 40px;
+  .spinner {
+    margin-left: 18px;
+    margin-top: 18px;
+  }
+}
+
+.btn {
+  .rounded(3px);
+}
+
+.btn-blue {
+  .gradient(@colorBlue,#006191,@colorBlue);
+  color: @colorLight;
+  text-shadow: 0 1px 1px @colorDark;
+
+  &:hover {
+    .gradient(#006191e,@colorBlue,#006191);
+    color: @colorLight;
+  }
+}
+
+.btn-dark {
+  font-weight: normal;
+  color: @colorLight;
+  .gradient(@colorGrey, #3b3b3b , @colorGrey);
+  text-shadow: 0 1px 1px @colorDark;
+
+  &:hover, &:active {
+    color: @colorLight;
+  }
+}
+
+.btn-danger {
+  .gradient(#903636,  @colorRed , #903636);
+
+  &:hover, &:active {
+    .gradient(@colorRed,  #903636 , @colorRed);
+  }
+}
+
+
+
+
+//Sprites
+
+.sprite {
+  background-image: url('/sprite.png');
+
+  &.arrow-up { background-position: 0 -70px; }
+  &.arrow-down { background-position: 0 -106px; }
+}
+
+
+
+
+//Menu left
+
+.navbar {
+  color: @colorLight;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 250px;
+  z-index: 10;
+  .gradient(#222222,#222222,@colorGrey);
+
+  a {
+    display: block;
+    width: 100%;
+
+    &:hover, &:active {
+      text-decoration: none;
+    }
+  }
+
+  .btn {
+    .rounded(0px);
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    width: 250px;
+  }
+
+  .institutions {
+    background-color: @colorDark;
+    height: 100%;
+    padding-bottom: 10px;
+    width: 100%;
+
+    .institutions-group {
+      background-color: #2e2e2e;
+      border-bottom: 1px solid #111111;
+      border-top: 1px solid #494949;
+      .box-shadow(-1px 0px 3px #111111);
+      margin-top: 20px;
+      padding: 7px 5px;
+      text-align: center;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+
+      li {
+
+        &:first-child {
+          &:hover, &.active {
+            border-top: none;
+          }
+        }
+
+        &.add {
+          opacity: 0.3;
+
+          &:hover, &:active, &.active {
+            opacity: 1;
+          }
+
+          a {
+            background-position: 10px -167px;
+          }
+        }
+
+        &.institution {
+          margin: 0;
+          padding: 1px 0;
+          width: 100%;
+
+          &:hover, &.active {
+            background-color: @colorGrey;
+            border-top: 1px solid #111;
+            border-bottom: 1px solid #111;
+            .inner-shadow(0,0,12px,0.55);
+            padding: 0;
+          }
+        }
+
+        &.active {
+          .gradient(@colorBlue,#006191,@colorBlue);
+          color: @colorLight;
+          text-shadow: 0 1px 1px @colorDark;
+          .inner-shadow(1px,1px,6px,0.9);
+        }
+
+        a {
+          background: url('/sprite.png') 8px -135px;
+          color: @colorLight;
+          display: block;
+          padding: 7px 5px 7px 38px;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .logo {
+    padding: 10px;
+    text-align: center;
+  }
+
+  .profil {
+    width: 100%;
+
+    a {
+      background: url('/sprite.png') no-repeat 10px 5px;
+      font-size: 16px;
+      padding: 10px 5px 10px 10px;
+      text-align: center;
+      text-shadow: 0 1px 1px @colorDark;
+      width: 100%;
+
+      &.login {
+        background: none;
+        padding: 10px 5px 10px 10px;
+      }
+    }
+  }
+
+  .search {
+    padding: 10px;
+
+    .input {
+      background: @colorDark  url('/sprite.png') -33px 5px;
+      padding: 0;
+      width: 100%;
+      .inner-shadow(0,0,8px,0.7);
+
+      input {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        background: transparent;
+        border:none;
+        height: 100%;
+        margin: 0;
+        padding: 5px;
+        .rounded(0);
+        width: 100%;
+
+        &:focus {
+          outline: 0!important;
+        }
+      }
+    }
+  }
+
+  .separator {
+    background-color: @colorDark;
+    border-bottom: 1px solid #454545;
+    height: 3px;
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+// CONTENT
+
+.content {
+  padding-top: 20px;
+  padding-left: 270px;
+  padding-right: 20px;
+  width: 100%;
+
+  .patientlist {
+    font-size:200%;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    width: 100%;
+
+    &.sortable {
+      li.patient {
+        a .delete {
+          display:block;
+        }
+
+        &.active {
+          .arrows {
+            display: block;
+          }
+        }
+      }
+
+    }
+
+    &.two_columns {
+      -ms-column-count: 2;
+      -o-column-count: 2;
+      -moz-column-count: 2;
+      -khtml-column-count: 2;
+      -webkit-column-count: 2;
+      column-count: 2;
+    }
+
+    li.patient {
+      margin: 15px 0;
+      padding-left: 30px;
+      position: relative;
+
+      &.active {
+        a {
+          background-color: @colorBlue;
+          border: 1px solid @colorDark;
+          color: #fff;
+          padding: 15px 10px;
+
+          .position {
+            color: #fff;
+          }
+          .delete {
+            color: #fff;
+          }
+        }
+      }
+
+      a {
+        border-bottom: 1px solid @colorDark;
+        color: @colorDark;
+        display: block;
+        font-weight: bold;
+        margin: 0;
+        padding: 15px 0;
+
+        &:hover, &:active {
+          text-decoration: none;
+        }
+
+        .delete {
+          color: @colorRed;
+          display: none;
+          float: right;
+          text-align: right;
+        }
+
+        .position {
+
+        }
+      }
+
+      .arrows {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        div {
+          height: 28px;
+          width: 28px;
+        }
+      }
+    }
+  }
+}
+
+
+
+//ADMIN PANEL
+.admin_panel {
+  .drop-shadow(0,-1px,3px,0.4);
+  background-color: #d1cccc;
+//  border-top: 1px solid @colorGrey;
+  bottom: 0;
+  right: 0;
+  padding: 20px 20px 10px 270px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+
+  input {
+    border: 1px solid @colorGrey;
+    float: left;
+    height: 30px;
+    line-height: 20px;
+    padding: 5px;
+    width: 300px;
+  }
+
+  .btn {
+    float: right;
+    margin-left: 10px;
+
+    &.add {
+      float: left;
+    }
+  }
+
+}
+
+
+
+// LOGIN FORM
+
+.container-login {
+  display: none;
+
+  .form-signin {
+    max-width: 300px;
+    padding: 20px 15px 0 15px;
+
+    h2 {
+      padding: 0 0 20px 0px;
+      text-align: center;
+    }
+
+    .btn {
+      float:left;
+    }
+
+    .form-signin-heading,
+    .checkbox {
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      font-size: 16px;
+      height: auto;
+      margin-bottom: 15px;
+      padding: 7px 9px;
+    }
+
+    .loading {
+      float: left;
+    }
+
+    .login-inputs.login {
+      .login-name {
+        display:none;
+      }
+    }
+
+    .login-inputs.retrieve {
+      .login-name, .login-password {
+        display:none;
+      }
+    }
+
+    .more {
+      float: right;
+      text-align: right;
+    }
+  }
+}
+
+
+
+
+// ADD INSTITUTIONS
+.container-create-institution {
+  display: none;
+  text-align: center;
+  max-width: 300px;
+
+  h2 {
+    padding: 0 0 20px 0;
+    text-align: center;
+  }
+
+  p.discret {
+    display: inline-block;
+    width: 100%;
+  }
+
+  input.institution-name {
+    padding: 14px;
+  }
+
+  .btn {
+    vertical-align: top;
+  }
+
+  .radio {
+    float: left;
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,61 @@
+<template name="nav">
+
+<div class="navbar">
+    <div class="logo">
+        <h1>When is<br />my turn</h1>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="profil">
+        {{#if currentUser}}
+            <a href="#">{{currentUser.profile.name}}</a>
+        {{else}}
+            <a href="#" class="login">Log in &nbsp; / &nbsp; Create account</a>
+        {{/if}}
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="search">
+        <div class="input">
+            <input type="search" />
+        </div>
+    </div>
+
+    {{> institutionslist}}
+
+    {{#if currentUser}}
+        <a href="#" class="btn btn-blue logout">Log out</a>
+    {{/if}}
+</div>
+
+</template>
+
+<template name="institutionslist">
+    <div class="institutions">
+        {{#if user}}
+            <div class="institutions-group">My institutions</div>
+            <ul>
+                <li class="institution add"><a href="#">New institution</a></li>
+            {{#with myInstitutions}}
+                {{#if count}}
+                    {{#each this}}
+                        {{> institution}}
+                    {{/each}}
+                {{/if}}
+            {{/with}}
+            </ul>
+        {{/if}}
+        <div class="institutions-group">Public institutions</div>
+        <ul>
+        {{#each institutions}}
+            {{> institution}}
+        {{/each}}
+        </ul>
+    </div>
+</template>
+
+<template name="institution">
+    <li class="institution {{active}}" data-id="{{_id}}"><a href="#">{{name}}</a></li>
+</template>
