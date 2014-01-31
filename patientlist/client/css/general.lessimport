@@ -1,0 +1,274 @@
+// CONTENT
+
+.content {
+    padding-top: 20px;
+    padding-left: 270px;
+    padding-right: 20px;
+    width: 100%;
+
+    .patientlist {
+        font-size:200%;
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+        width: 100%;
+
+        &.sortable {
+            li.patient {
+                a .delete {
+                    display:block;
+                }
+
+                &.active {
+                    .arrows {
+                        display: block;
+                    }
+                }
+            }
+
+        }
+
+        &.two_columns {
+            -ms-column-count: 2;
+            -o-column-count: 2;
+            -moz-column-count: 2;
+            -khtml-column-count: 2;
+            -webkit-column-count: 2;
+            column-count: 2;
+        }
+
+        li.patient {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+
+            &.active {
+                a {
+                    background-color: @colorBlue;
+                    border: 1px solid @colorDark;
+                    color: #fff;
+                    padding: 15px 10px;
+
+                    .position {
+                        color: #fff;
+                    }
+                    .delete {
+                        color: #fff;
+                    }
+                }
+            }
+
+            a {
+                border-bottom: 1px solid @colorDark;
+                color: @colorDark;
+                display: block;
+                font-weight: bold;
+                margin: 0;
+                padding: 15px 0;
+
+                &:hover, &:active {
+                    text-decoration: none;
+                }
+
+                .delete {
+                    color: @colorRed;
+                    display: none;
+                    float: right;
+                    padding-top: 3px;
+                    text-align: right;
+                }
+
+                .alert-icon {
+                    float: right;
+                    margin-right: 5px;
+                }
+
+                .position {
+
+                }
+            }
+
+            .arrows {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                div {
+                    height: 28px;
+                    width: 28px;
+                }
+            }
+        }
+    }
+}
+
+
+
+//ADMIN PANEL
+.admin_panel {
+    .drop-shadow(0,-1px,3px,0.4);
+    background-color: #d1cccc;
+    //  border-top: 1px solid @colorGrey;
+    bottom: 0;
+    right: 0;
+    padding: 20px 20px 10px 270px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+
+    input {
+        border: 1px solid @colorGrey;
+        float: left;
+        height: 30px;
+        line-height: 20px;
+        padding: 5px;
+        width: 300px;
+    }
+
+    .btn {
+        float: right;
+        margin-left: 10px;
+
+        &.add {
+            float: left;
+        }
+    }
+
+}
+
+
+
+// LOGIN FORM
+
+.container-login {
+    display: none;
+
+    .form-signin {
+        max-width: 300px;
+        padding: 20px 15px 0 15px;
+
+        h2 {
+            padding: 0 0 20px 0px;
+            text-align: center;
+        }
+
+        .btn {
+            float:left;
+        }
+
+        .form-signin-heading,
+        .checkbox {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            font-size: 16px;
+            height: auto;
+            margin-bottom: 15px;
+            padding: 7px 9px;
+        }
+
+        .loading {
+            float: left;
+        }
+
+        .login-inputs.login {
+            .login-name {
+                display:none;
+            }
+        }
+
+        .login-inputs.retrieve {
+            .login-name, .login-password {
+                display:none;
+            }
+        }
+
+        .more {
+            float: right;
+            text-align: right;
+        }
+    }
+}
+
+
+
+// PROFIL PAGE
+
+.container-profil {
+    display: none;
+
+    h2 {
+        padding-left: 0;
+    }
+    input {
+        max-width: 300px;
+        &[type="checkbox"] {
+            float: left;
+            margin-right: 10px;
+        }
+    }
+
+}
+
+.container-add-alert {
+    display: none;
+
+    h3 {
+        margin-top: 0;
+    }
+
+    .form-add-alert {
+        position: relative;
+
+        select {
+            width: 150px;
+        }
+
+        input {
+            padding: 14px 10px;
+            width: 50px;
+
+            &[type="radio"] {
+                margin: -2px 0 0 0;
+                padding: 0;
+                width: 20px;
+            }
+        }
+    }
+}
+
+
+
+
+// ADD INSTITUTIONS
+.container-create-institution {
+    display: none;
+    text-align: center;
+    max-width: 300px;
+
+    h2 {
+        padding: 0 0 20px 0;
+        text-align: center;
+    }
+
+    p.discret {
+        display: inline-block;
+        width: 100%;
+    }
+
+    input.institution-name {
+        padding: 14px;
+    }
+
+    .btn {
+        vertical-align: top;
+    }
+
+    .radio {
+        float: left;
+        margin-left: 20px;
+    }
+}
