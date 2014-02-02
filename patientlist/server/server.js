@@ -15,7 +15,7 @@ Meteor.publish("userData", function () {
 //METHODS
 
 Meteor.methods({
-	create_institution: function (name, isPrivate) {
+	create_institution: function (name, description, isPrivate) {
 		var user = this.userId;
 		if (!user)
 			throw new Meteor.Error(403, "You need to be logged in to add an institution.");
@@ -26,7 +26,7 @@ Meteor.methods({
 		if (name_exists)
 			throw new Meteor.Error(403, "There is already an institution with this name : " + name);
 
-		var institution = Institutions.insert({name: name, owner: [user], users: [user], private: isPrivate});
+		var institution = Institutions.insert({name: name, description: description, owner: [user], users: [user], private: isPrivate});
 		var profile = Meteor.user().profile;
 		var institutions = [institution];
 		if (profile.institutions) {

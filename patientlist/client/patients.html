@@ -1,6 +1,7 @@
 <template name="patientlist">
     <div class="container-main">
         <h2>{{ institution_name }} {{#if isAdmin}}<span class="btn btn-dark viewmode">Switch to listview</span>{{/if}}</h2>
+        {{#if description}}<p>{{description}}</p><p class="hidden"><textarea id="description" placeholder="{{description}}"></textarea></p>{{/if}}
         <ul class="patientlist {{#if isAdmin}}sortable{{/if}}">
             {{#each patients}}
                 {{> patient}}
