@@ -1,0 +1,34 @@
+<template name="login">
+	<form class="form-signin clearfix">
+		{{#if stateIs "create"}}<div class="login-inputs create">{{/if}}
+		{{#if stateIs "login"}}<div class="login-inputs login">{{/if}}
+		{{#if stateIs "retrieve"}}<div class="login-inputs retrieve">{{/if}}
+			<input type="text" class="input-block-level login-name" placeholder="Name">
+			<input type="text" class="input-block-level login-email" placeholder="Email address">
+			<input type="password" class="input-block-level login-password" placeholder="Password" >
+		</div>
+		<button class="no-link btn btn-large btn-blue" type="submit">
+			{{#if stateIs "login"}} Log in {{/if}}
+			{{#if stateIs "create"}} Create {{/if}}
+			{{#if stateIs "retrieve"}} Change password {{/if}}
+		</button>
+		{{#if stateIs "create"}}
+			<div class="more">
+				<a href="#" class="no-link switch-login">Log in</a>
+			</div>
+		{{/if}}
+		{{#if stateIs "login"}}
+			<div class="more">
+				<a href="#" class="no-link switch-create">Create account</a><br />
+				<a href="#" class="no-link switch-retrieve">Forgot password</a>
+			</div>
+		{{/if}}
+		{{#if stateIs "retrieve"}}
+			<div class="more">
+				<a href="#" class="no-link switch-login">Log in</a><br />
+				<a href="#" class="no-link switch-create">Create account</a>
+			</div>
+		{{/if}}
+		<div class="loading"></div>
+	</form>
+</template>

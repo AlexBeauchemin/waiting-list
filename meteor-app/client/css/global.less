@@ -1,0 +1,142 @@
+* {
+    //general rules , doesn't really affects performances
+    .box-sizing();
+
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+body {
+    background-color: @colorLight;
+    color: @colorDark;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    margin: 0 0 0 0;
+    padding: 0;
+    //  .user-select();
+}
+
+a {
+    color: @colorBlue;
+
+    &:hover, &:active {
+        color: #06a3f2;
+    }
+}
+
+h2 {
+    font-size: 45px;
+    padding: 0 0 25px 0;
+    text-align: left;
+
+    .btn {
+        float: right;
+    }
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.alerts {
+    left: 0px;
+    padding-left: @navWidth;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 8030;
+    ul {
+        list-style: none;
+        margin: 0;
+        width: 100%;
+        li {
+            cursor: pointer;
+            text-align: center;
+            padding: 5px 0;
+            opacity: 0;
+            width: 100%;
+            .close {
+                background: url('/glyphicons-halflings.png') 156px 0px;
+                display: inline-block;
+                height: 12px;
+                margin-right: 10px;
+                margin-top: 3px;
+                opacity: 1;
+                width: 14px;
+            }
+        }
+    }
+}
+
+.discret {
+    color: #999;
+    font-size: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.loading {
+    height: 40px;
+    width: 40px;
+    .spinner {
+        margin-left: 18px;
+        margin-top: 18px;
+    }
+}
+
+.btn {
+    .rounded(3px);
+}
+
+.btn-blue {
+    .gradient(@colorBlue, #006191, @colorBlue);
+    color: @colorLight;
+    text-shadow: 0 1px 1px @colorDark;
+
+    &:hover {
+        .gradient(#006191e, @colorBlue, #006191);
+        color: @colorLight;
+    }
+}
+
+.btn-dark {
+    font-weight: normal;
+    color: @colorLight;
+    .gradient(@colorGrey, #3b3b3b, @colorGrey);
+    text-shadow: 0 1px 1px @colorDark;
+
+    &:hover, &:active {
+        color: @colorLight;
+        .gradient(#666, @colorGrey, #666);
+    }
+}
+
+.btn-danger {
+    .gradient(#903636, @colorRed, #903636);
+
+    &:hover, &:active {
+        .gradient(@colorRed, #903636, @colorRed);
+    }
+}
+
+.sprite {
+    background-image: url('/sprite.png');
+
+    &.glyphicons {
+        background-image: url('/glyphicons-halflings.png');
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+
+        &.edit { background-position: 0 -70px; }
+    }
+
+    &.arrow-up { background-position: 0 -70px; }
+    &.arrow-down { background-position: 0 -106px; }
+}
