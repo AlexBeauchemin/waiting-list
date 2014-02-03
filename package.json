@@ -1,0 +1,25 @@
+{
+  "name": "WaitingList",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "homepage": "",
+  "author": {
+    "name": "Alex Beauchemin",
+    "email": "alexbeauchemin01@gmail.com",
+    "url": ""
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.6.4",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-autoprefixer": "~0.2.20130806",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-retire": "*",
+    "matchdep": "*"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}
