@@ -27,4 +27,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# PHPStorm/WebStorm #
+#####################
 .idea
+
+node_modules/
