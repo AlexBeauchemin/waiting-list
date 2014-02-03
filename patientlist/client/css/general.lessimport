@@ -6,6 +6,12 @@
     padding-right: 20px;
     width: 100%;
 
+    .description {
+        .description-text {
+            cursor: pointer;
+        }
+    }
+
     .patientlist {
         font-size:200%;
         list-style: none;

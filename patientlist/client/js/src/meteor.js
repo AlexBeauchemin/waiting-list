@@ -59,11 +59,11 @@ if (Meteor.isClient) {
     return patient && patient.name;
   };
 
-  Template.patientlist.institution_name = function () {
+  Template.patientlist.institution_info = function () {
     var institution = Institutions.findOne({_id: Session.get('current_institution')});
     if (institution)
-      return institution.name;
-    return "";
+      return institution;
+    return {};
   };
 
   Template.patientlist.isAdmin = function () {
@@ -232,6 +232,18 @@ if (Meteor.isClient) {
       Meteor.call('delete_institution', Session.get("current_institution"), function (res) {
         App.outputSuccess('Institution deleted');
       });
+    },
+    'click a[data-action="save-description"]': function() {
+      var description = $('#description').val();
+      Meteor.call('update_institution', Session.get("current_institution"), {description: description}, function (res) {
+        if(description) App.outputSuccess('Description saved');
+        else App.outputSuccess('Description deleted');
+        $('.description').children().toggleClass('hidden');
+      });
+    },
+    'click span.description-text': function() {
+      $('p.description').children().toggleClass('hidden');
+      $('#description').trigger('focus');
     },
     'click .viewmode': function (e) {
       //TODO: Clean this;

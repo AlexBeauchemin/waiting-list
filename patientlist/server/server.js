@@ -60,6 +60,11 @@ Meteor.methods({
 		if(isAdmin(this.userId,institution))
 			Institutions.remove(institution);
 	},
+  update_institution: function (institution, data) {
+		if(isAdmin(this.userId,institution)) {
+      Institutions.update(institution, {$set: data});
+    }
+	},
 	empty: null // To avoid adding, removing comas for last item
 });
 
