@@ -6,7 +6,7 @@
             <span class="description-text">{{#if institution_info.description}}{{institution_info.description}}</span> <span class="description-text sprite glyphicons edit" data-action="edit">{{/if}}</span>
             <span class="description-edit{{#if institution_info.description}} hidden{{/if}}">
                 <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
-                <a class="no-link btn btn-blue" data-action="save-description">Save</a>
+                <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
             </span>
         {{else}}
             {{#if institution_info.description}}{{institution_info.description}}{{/if}}

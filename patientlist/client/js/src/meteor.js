@@ -1,12 +1,7 @@
 //CLIENT ACTIONS
 if (Meteor.isClient) {
 
-  //VARS
-  var currentPage = "main",
-    spinner = null;
-
   Session.set('loginState', "login");
-
 
   //SUBSCRIPTIONS
   Meteor.subscribe('institutions', null, function () {
@@ -102,21 +97,15 @@ if (Meteor.isClient) {
     },
     'click .institution': function (event) {
       var target = $(event.target).parent();
-//            if(currentPage == 'create-institution' && !target.hasClass('add')) {
-//                $('.navbar .institutions li.add').removeClass('active');
-//                changePage('main');
-//            }
-//            else if(target.hasClass('add')) {
-//                $('.navbar .institutions li').removeClass('active');
-//                changePage('create-institution');
-//            }
-//            target.addClass('active');
       if (target.hasClass('add')) {
         var content = $('.container-create-institution');
         content.show();
         $.fancybox({
           content: content
         });
+      }
+      else {
+        App.changePage('main',true);
       }
     }
   });
@@ -241,6 +230,12 @@ if (Meteor.isClient) {
         $('.description').children().toggleClass('hidden');
       });
     },
+    'click a[data-action="cancel-description"]': function() {
+      var $description = $('.description');
+      $description.children().toggleClass('hidden');
+      $description.find('textarea').val($description.children('.description-text').text());
+
+    },
     'click span.description-text': function() {
       $('p.description').children().toggleClass('hidden');
       $('#description').trigger('focus');
@@ -268,6 +263,7 @@ if (Meteor.isClient) {
         if (App.viewmode_properties.elAdminPanel)
           App.viewmode_properties.elAdminPanel.slideDown();
         $(e.srcElement).html('Switch to list view');
+        $('.description-text.sprite').show();
         //Switch to list mode
       } else {
         App.viewmode_properties.elTitle.slideUp();
@@ -278,6 +274,7 @@ if (Meteor.isClient) {
         if (App.viewmode_properties.elAdminPanel)
           App.viewmode_properties.elAdminPanel.slideUp();
         $(e.srcElement).html('Switch to normal view');
+        $('.description-text.sprite').hide();
       }
 
     }

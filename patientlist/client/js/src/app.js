@@ -2,7 +2,8 @@
   App = {
     $body: null,
     $alerts: null,
-    viewmode_properties: null,
+    currentPage: 'main',
+    spinner: null,
     spinner_opts: {
       lines: 11, // The number of lines to draw
       length: 0, // The length of each line
@@ -20,6 +21,7 @@
       top: '20px', // Top position relative to parent in px
       left: '20px' // Left position relative to parent in px
     },
+    viewmode_properties: null,
 
     init: function () {
       var _this = this;
@@ -92,10 +94,10 @@
         var $loginContainer = $('.container-login'),
           $loginBtn = $loginContainer.find('.btn');
         $loginBtn.hide();
-        spinner = _this.addSpinner($loginContainer.find('.loading')[0]);
+        _this.spinner = _this.addSpinner($loginContainer.find('.loading')[0]);
         Accounts.createUser({email: email, password: password, profile: {name: name}}, function (error) {
           $loginBtn.show();
-          spinner.stop();
+          _this.spinner.stop();
           if (error) _this.outputErrors(error);
           else {
             Meteor.loginWithPassword({email: email}, password, function (error) {
@@ -133,8 +135,11 @@
       return new_spinner;
     },
 
-    changePage: function (newPage) {
-      var _this = this;
+    changePage: function (newPage, forced) {
+      var _this = this,
+        oldPage = _this.currentPage;
+
+      if(!forced && newPage == _this.currentPage) return;
 
       if (newPage == "login") {
         var container = $('.container-' + newPage);
@@ -142,16 +147,13 @@
         $.fancybox({
           content: container
         });
+        return;
       }
-      else {
-        if (newPage != currentPage) {
-          var oldPage = currentPage;
-          $('.container-' + oldPage).stop(true, false).slideToggle('fast', function () {
-            $('.container-' + newPage).stop(true, false).slideToggle('fast');
-          });
-          currentPage = newPage;
-        }
-      }
+
+      _this.currentPage = newPage;
+      $('.container-' + oldPage).stop(true, false).slideUp('fast', function () {
+        $('.container-' + newPage).stop(true, false).slideDown('fast');
+      });
     },
 
     outputErrors: function (error) {
@@ -202,9 +204,3 @@
     empty: null
   };
 })(jQuery);
-
-//TODO: Email / Text alerts for subscribed events
-//TODO: Add html5shiv / test on ie
-//TODO: Search institutions
-//TODO: http://www.abitibiexpress.ca/Soci%C3%A9t%C3%A9/Sant%C3%A9/2013-01-15/article-3156769/Lurgence-du-CSSSRN-un-modele-pour-le-reste-du-Quebec/1
-//TODO: domaine name : easylivelist , whenismyturn , waittimetracking , aquandmontour

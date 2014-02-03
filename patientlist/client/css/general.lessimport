@@ -10,6 +10,10 @@
         .description-text {
             cursor: pointer;
         }
+
+        textarea {
+            width: 100%;
+        }
     }
 
     .patientlist {
