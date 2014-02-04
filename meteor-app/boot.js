@@ -4,6 +4,8 @@ Patients = new Meteor.Collection("patients");
 Institutions = new Meteor.Collection("institutions");
 UserData = new Meteor.Collection("userData");
 
+//TODO: Use meteorite? nprogress + fontawesome
+
 //TODO: Remove less package and use grunt instead
 //TODO: Email alerts for subscribed events
 //TODO: Add html5shiv / test on ie

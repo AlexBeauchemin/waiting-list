@@ -3,7 +3,7 @@
         <h2>{{ institution_info.name }} {{#if isAdmin}}<span class="btn btn-dark viewmode">Switch to listview</span>{{/if}}</h2>
         <p class="description">
         {{#if isAdmin}}
-            <span class="description-text">{{#if institution_info.description}}{{institution_info.description}}</span> <span class="description-text sprite glyphicons edit" data-action="edit">{{/if}}</span>
+            <span class="description-text">{{#if institution_info.description}}{{institution_info.description}} <i class="description-text edit fa fa-pencil" data-action="edit"></i>{{/if}}</span>
             <span class="description-edit{{#if institution_info.description}} hidden{{/if}}">
                 <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
                 <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
