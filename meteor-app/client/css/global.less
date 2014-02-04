@@ -1,7 +1,6 @@
 * {
     //general rules , doesn't really affects performances
-    .box-sizing();
-
+    box-sizing: border-box;
     background-repeat: no-repeat;
     vertical-align: middle;
 }
@@ -17,6 +16,7 @@ body {
 }
 
 a {
+    color: white;
     color: @colorBlue;
 
     &:hover, &:active {
@@ -91,7 +91,7 @@ h2 {
 }
 
 .btn {
-    .rounded(3px);
+    border-radius: 3px;
 }
 
 .btn-blue {
