@@ -167,7 +167,7 @@
         else
           msg = error;
         _this.$alerts.append('<li class="btn-danger">' + msg + '<span class="close"></span></li>');
-        var item = $alerts.find('li').last();
+        var item = _this.$alerts.find('li').last();
 
         _this.animateOutput(item);
       }
