@@ -1,5 +1,3 @@
-console.log('main');
-
 Template.login.stateIs = function (state) {
   return state === Session.get("loginState");
 };
@@ -63,20 +61,20 @@ Template.institution.active = function () {
 //EVENTS
 Template.nav.events({
   'click .login': function () {
-    App.changePage('login');
+    Helpers.changePage('login');
   },
   'click .profil': function () {
-    App.changePage('profil');
+    Helpers.changePage('profil');
   },
   'click .logout': function () {
     Meteor.logout(function (error) {
-      if (error) App.outputErrors(error);
+      if (error) Helpers.outputErrors(error);
     });
   },
   'click .logo': function () {
     var $navBarItems = $('.navbar .nav li');
     $navBarItems.removeClass('active');
-    App.changePage('main');
+    Helpers.changePage('main');
   },
   'click .institution': function (event) {
     var target = $(event.target).parent();
@@ -88,7 +86,7 @@ Template.nav.events({
       });
     }
     else {
-      App.changePage('main',true);
+      Helpers.changePage('main', true);
     }
   }
 });
@@ -111,15 +109,15 @@ Template.login.events({
       password = $containerLogin.find('.login-password').val();
 
     if (state == "create") {
-      App.createAccount(name, email, password);
+      Helpers.createAccount(name, email, password);
     }
     else if (state == "login") {
       Meteor.loginWithPassword({email: email}, password, function (error) {
-        if (error) App.outputErrors(error);
+        if (error) Helpers.outputErrors(error);
         else {
           $.fancybox.close();
-          App.outputSuccess('You are now logged in.');
-          App.changePage('main');
+          Helpers.outputSuccess('You are now logged in.');
+          Helpers.changePage('main');
         }
       });
     }
@@ -135,11 +133,11 @@ Template.createInstitution.events({
       isPrivate = $('input[name="private"]:checked').val();
     Meteor.call("create_institution", name, '', isPrivate, function (error) {
       if (error) {
-        App.outputErrors(error);
+        Helpers.outputErrors(error);
       }
       else {
-        App.changePage('main');
-        App.outputSuccess('New institution created.');
+        Helpers.changePage('main');
+        Helpers.outputSuccess('New institution created.');
         $.fancybox.close();
       }
     });
@@ -149,14 +147,14 @@ Template.createInstitution.events({
 Template.institution.events({
   'click': function () {
     Session.set("current_institution", this._id);
-    App.updatePatients();
+    Helpers.updatePatients();
   }
 });
 
 Template.patient.events({
   'click .delete': function () {
     Meteor.call('delete_patient', this._id, Session.get("current_institution"));
-    App.updatePatients();
+    Helpers.updatePatients();
   },
   'click .alert-icon': function () {
     $.fancybox({
@@ -183,54 +181,54 @@ Template.patientlist.events({
     }
   },
   'click a.add': function () {
-    App.addPatient($('.addPatient').val());
+    Helpers.addPatient($('.addPatient').val());
 //      var name = $('.addPatient').val(),
 //        position = $('.patient').length + 1,
 //        institution = Session.get("current_institution");
 //      if (name && position && institution) {
 //        Meteor.call("create_patient", name, position, institution, function (error, patient_id) {
-//          App.outputErrors(error);
+//          Helpers.outputErrors(error);
 //        });
 //      }
   },
   'click a.repair': function () {
-    App.updatePatients();
+    Helpers.updatePatients();
   },
   'click a.empty': function () {
     Meteor.call('empty_institution', Session.get("current_institution"), function (res) {
-      App.outputSuccess('Institution is now empty');
+      Helpers.outputSuccess('Institution is now empty');
     });
   },
   'click a.delete': function () {
     Meteor.call('delete_institution', Session.get("current_institution"), function (res) {
-      App.outputSuccess('Institution deleted');
+      Helpers.outputSuccess('Institution deleted');
     });
   },
-  'click a[data-action="save-description"]': function() {
+  'click a[data-action="save-description"]': function () {
     var description = $('#description').val();
     Meteor.call('update_institution', Session.get("current_institution"), {description: description}, function (res) {
-      if(description) App.outputSuccess('Description saved');
-      else App.outputSuccess('Description deleted');
+      if (description) Helpers.outputSuccess('Description saved');
+      else Helpers.outputSuccess('Description deleted');
       $('.description').children().toggleClass('hidden');
     });
   },
-  'click a[data-action="cancel-description"]': function() {
+  'click a[data-action="cancel-description"]': function () {
     var $description = $('.description');
     $description.children().toggleClass('hidden');
     $description.find('textarea').val($description.children('.description-text').text());
 
   },
-  'click span.description-text': function() {
+  'click span.description-text': function () {
     $('p.description').children().toggleClass('hidden');
     $('#description').trigger('focus');
   },
   'click .viewmode': function (e) {
-    App.toggleViewMode($(e.srcElement));
+    Helpers.toggleViewMode($(e.srcElement));
   },
   'keyup .addPatient': function (event) {
-    if(event.keyCode == 13) {
+    if (event.keyCode == 13) {
       var $input = $(event.srcElement);
-      App.addPatient($input.val());
+      Helpers.addPatient($input.val());
       $input.val('');
     }
   }
@@ -244,10 +242,10 @@ Template.patient.events({
 });
 
 Template.patientlist.rendered = function () {
-  App.renderPatientlistTemplate();
+  Helpers.renderPatientlistTemplate();
 };
 
 Meteor.startup(function () {
-  console.log('startup');
-  App.init();
+  Helpers.init();
 });
+
