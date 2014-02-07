@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 	var config = {
-		jsLibs: 'meteor-app/client/js/libs',
+		jsLibs: 'meteor-app/client/js/lib',
 		jsSrc: 'meteor-app/client/js/src',
 		jsDest: 'meteor-app/client/js/dest',
 		cssSrc: 'meteor-app/client/css',
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 			}
 		},
 		retire: {
-			js: ['meteor-app/client/js/libs/*'],
+			js: ['meteor-app/client/js/lib/*'],
 			options: {}
 		}
 	});
