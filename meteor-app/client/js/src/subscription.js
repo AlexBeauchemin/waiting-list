@@ -9,7 +9,7 @@ Meteor.subscribe('institutions', null, function () {
       Session.set("current_institution", defaultInstitution[0]._id);
     }
 
-    Meteor.autosubscribe(function () {
+    Meteor.autorun(function () {
       Meteor.subscribe('patients', Session.get("current_institution"));
       Meteor.subscribe('userData', null, function () {
         //console.log('Userdata:',Meteor.user().profile);
