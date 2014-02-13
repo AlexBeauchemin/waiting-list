@@ -1,8 +1,7 @@
 module.exports = function(grunt) {
 	var config = {
-		jsLibs: 'meteor-app/client/js/lib',
-		jsSrc: 'meteor-app/client/js/src',
-		jsDest: 'meteor-app/client/js/dest',
+		jsLibs: 'meteor-app/client/lib',
+		jsSrc: 'meteor-app/client',
 		cssSrc: 'meteor-app/client/css',
 		cssDest: 'meteor-app/client/css'
 	};
@@ -35,7 +34,7 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-			files: ['<%= config.jsSrc %>/*.js', '<%= config.jsSrc %>/**/*.js'],
+			files: ['<%= config.jsSrc %>/views/*.js', '<%= config.jsSrc %>/lib/helpers/*.js', '<%= config.jsLibs %>/collections/*.js', '<%= config.jsLibs %>/lib/*.js', '<%= config.jsLibs %>/server/*.js', '<%= config.jsLibs %>/server/lib/*.js'],
 			options: {
 				force: true
 			}
@@ -51,7 +50,7 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			js: {
-				files: ['<%= config.jsSrc %>/*.js', '<%= config.jsSrc %>/**/*.js', '<%= config.jsLibs %>/*.js'],
+				files: ['<%= config.jsSrc %>/views/*.js', '<%= config.jsSrc %>/lib/helpers/*.js', '<%= config.jsLibs %>/collections/*.js', '<%= config.jsLibs %>/lib/*.js', '<%= config.jsLibs %>/server/*.js', '<%= config.jsLibs %>/server/lib/*.js'],
 				tasks: ['jshint']
 			},
 			less: {
