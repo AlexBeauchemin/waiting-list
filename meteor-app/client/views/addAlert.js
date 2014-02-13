@@ -14,6 +14,10 @@ Template.addAlert.patientPos = function () {
   return Session.get("selected_patient_pos");
 };
 
+Template.addAlert.institutionId = function () {
+  return Session.get("current_institution");
+};
+
 
 
 //---------------------------------------------------
@@ -24,10 +28,11 @@ Template.addAlert.events({
   'click .btn': function (el) {
     var $form = $(el.srcElement).closest('form'),
       direction = $form.find('select[name="direction"]').val(),
-      id = $form.find('input[name="id"]').val(),
+      institution = $form.find('input[name="institution"]').val(),
+      patient = $form.find('input[name="id"]').val(),
       pos = $form.find('input[name="pos"]').val();
 
-    Meteor.call('add_alert', id, pos, direction, function (error) {
+    Meteor.call('add_alert', institution, patient, pos, direction, function (error) {
       if (error) {
         Helpers.outputErrors(error);
       }

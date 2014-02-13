@@ -2,6 +2,7 @@
 	<h3>Receive an email alert</h3>
 	<form class="form-add-alert clearfix">
         <input type="hidden" name="id" value="{{patientId}}" />
+        <input type="hidden" name="institution" value="{{institutionId}}" />
 		<p> When {{patientName}} position is <select name="direction"><option value="under">under</option><option value="over">over</option></select> the position # <input type="text" name="pos" value="{{patientPos}}"></p>
 		<button class="no-link btn btn-large btn-blue" type="button">Save</button>
 	</form>

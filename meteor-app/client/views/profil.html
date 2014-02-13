@@ -10,7 +10,9 @@
         </form>
         <h3>Subscribed events</h3>
         <ul>
-
+            {{#each alerts}}
+                <li class="alert" data-id="{{_id}}"><a href="#">{{patientId}} : {{position}}</a></li>
+            {{/each}}
         </ul>
     {{/if}}
 </template>
