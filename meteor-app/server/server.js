@@ -1,4 +1,4 @@
-//Validations for account creation
+//Validations for account creation (part of the account package)
 Accounts.validateNewUser(function (user) {
 	var email = user.emails[0].address;
 	var re = /[^\s@]+@[^\s@]+\.[^\s@]+/;
@@ -14,15 +14,3 @@ Accounts.onCreateUser(function (options, user) {
 		user.profile = options.profile;
 	return user;
 });
-
-
-function isAdmin(user,institution) {
-	if (user) {
-		var is_institution_admin = Institutions.findOne({users: user, _id: institution});
-		if (is_institution_admin) {
-			return true;
-		}
-	}
-
-	return false;
-}
