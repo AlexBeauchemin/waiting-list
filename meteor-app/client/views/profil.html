@@ -10,7 +10,7 @@
         <h3>Subscribed events</h3>
         <ul>
             {{#each alerts}}
-                <li class="alert" data-id="{{_id}}"><a href="#">{{patientId}} : {{position}}</a></li>
+                <li class="alert" data-id="{{_id}}"><a href="#">{{patientName}} : {{position}} (isSent -> {{isSent}})</a></li>
             {{/each}}
         </ul>
     {{/if}}

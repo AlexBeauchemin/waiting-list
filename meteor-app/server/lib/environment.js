@@ -1,4 +1,4 @@
-function isAdmin(user,institution) {
+isAdmin = function (user,institution) {
   if (user) {
     var is_institution_admin = Institutions.findOne({users: user, _id: institution});
     if (is_institution_admin) {
@@ -7,4 +7,4 @@ function isAdmin(user,institution) {
   }
 
   return false;
-}
+};

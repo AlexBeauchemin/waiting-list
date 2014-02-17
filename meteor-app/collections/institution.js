@@ -24,12 +24,16 @@ if (Meteor.isServer) {
       return false;
     },
     empty_institution: function (institution) {
-      if(isAdmin(this.userId,institution))
+      if(isAdmin(this.userId,institution)) {
         Patients.remove({institution: institution});
+        Alerts.remove({institutionId: institution});
+      }
     },
     delete_institution: function (institution) {
-      if(isAdmin(this.userId,institution))
+      if(isAdmin(this.userId,institution)) {
         Institutions.remove(institution);
+        Alerts.remove({institutionId: institution});
+      }
     },
     update_institution: function (institution, data) {
       if(isAdmin(this.userId,institution)) {
