@@ -8,19 +8,7 @@ if (Meteor.isServer) {
     },
     update_patient: function (id, position, institution) {
       if(isAdmin(this.userId,institution)) {
-        var alerts = Alerts.find({patientId: id, isSent: false}).fetch();
-        if(alerts.length) {
-          alerts.forEach(function(alert) {
-            if(alert.direction == "over" && position > parseInt(alert.position,10)) {
-              //TODO: Send email
-              Alerts.update(alert._id, {$set: {isSent: true}});
-            }
-            else if(alert.direction == "under" && position < parseInt(alert.position,10)) {
-              //TODO: Send email
-              Alerts.update(alert._id, {$set: {isSent: true}});
-            }
-          });
-        }
+        updateAlerts(id, position);
         Patients.update(id, {$set: {position: position}});
       }
     },

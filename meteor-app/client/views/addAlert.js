@@ -29,10 +29,11 @@ Template.addAlert.events({
     var $form = $(el.srcElement).closest('form'),
       direction = $form.find('select[name="direction"]').val(),
       institution = $form.find('input[name="institution"]').val(),
+      onetime = $form.find('input[name="onetime"]').is(':checked'),
       patient = $form.find('input[name="id"]').val(),
       pos = $form.find('input[name="pos"]').val();
 
-    Meteor.call('add_alert', institution, patient, pos, direction, function (error) {
+    Meteor.call('add_alert', institution, patient, pos, direction, onetime, function (error) {
       if (error) {
         Helpers.outputErrors(error);
       }
