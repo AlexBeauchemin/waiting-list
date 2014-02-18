@@ -8,11 +8,20 @@ Template.profil.alerts = function () {
     });
   }
 
-  //TODO: I think the return is called before all Meteor.Call() are processed, so the patientName is not in the returning value
-  //Need a better way to handle relational table in mongodb
+  //TODO: Need a better way to handle relational table in mongodb
   //See http://stackoverflow.com/questions/12764307/meteor-trouble-using-return-value-from-meteor-call
   //https://www.discovermeteor.com/blog/reactive-joins-in-meteor/
   //http://stackoverflow.com/questions/15511191/change-collection-before-publishing
 
   return alerts;
 };
+
+//---------------------------------------------------
+// EVENTS
+//---------------------------------------------------
+
+Template.profil.events({
+  'click [data-action="delete"]': function () {
+    Meteor.call('delete_alert', this._id);
+  }
+});

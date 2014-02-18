@@ -8,10 +8,27 @@
             <button class="no-link btn btn-large btn-blue" type="submit">Save</button>
         </form>
         <h3>Subscribed events</h3>
-        <ul>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Institution</th>
+                    <th>Position</th>
+                    <th>Alert on</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
             {{#each alerts}}
-                <li class="alert" data-id="{{_id}}"><a href="#">{{patientName}} : {{position}} (isSent -> {{isSent}})</a></li>
+                <tr>
+                    <td>{{patientName}}</td>
+                    <td>{{institutionName}}</td>
+                    <td>{{patientPosition}}</td>
+                    <td>{{direction}} {{position}}</td>
+                    <td><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
+                </tr>
             {{/each}}
-        </ul>
+            </tbody>
+        </table>
     {{/if}}
 </template>

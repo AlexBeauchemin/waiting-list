@@ -11,6 +11,12 @@ if (Meteor.isServer) {
 
       return false;
     },
+    delete_alert: function(id) {
+      var alert = Alerts.findOne({_id : id});
+      if(this.userId == alert.user) {
+        Alerts.remove(id);
+      }
+    },
 
     empty: null // To avoid adding, removing comas for last item
   });
