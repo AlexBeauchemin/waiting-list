@@ -20,7 +20,6 @@ Helpers = {
     top: '20px', // Top position relative to parent in px
     left: '20px' // Left position relative to parent in px
   },
-  viewmode_properties: null,
 
   init: function () {
     var _this = this;
@@ -207,40 +206,12 @@ Helpers = {
   toggleViewMode: function($button) {
     var _this = this;
 
-    //TODO: Refactor this -> use css transitions with a body class instead
-    if (!_this.viewmode_properties) {
-      _this.viewmode_properties = {
-        'elTitle': $('.navbar-fixed-top'),
-        'elMenu': $('.navbar'),
-        'elContent': $('.content'),
-        'elBody': $('body'),
-        'elLogout': $('.btn.logout'),
-        'elAdminPanel': $('.admin_panel')
-      };
-    }
+    _this.$body.toggleClass('listView');
 
-    // Switch back to normal mode
-    if (_this.viewmode_properties.elBody.hasClass('listview')) {
-      _this.viewmode_properties.elTitle.slideDown();
-      _this.viewmode_properties.elMenu.animate({'left': 0});
-      _this.viewmode_properties.elLogout.animate({'left': 0});
-      _this.viewmode_properties.elContent.animate({'paddingLeft': 270});
-      _this.viewmode_properties.elBody.removeClass('listview');
-      if (_this.viewmode_properties.elAdminPanel)
-        _this.viewmode_properties.elAdminPanel.slideDown();
-      $button.html('Switch to list view');
-      $('.description-text.sprite').show();
-      //Switch to list mode
-    } else {
-      _this.viewmode_properties.elTitle.slideUp();
-      _this.viewmode_properties.elMenu.animate({'left': -250});
-      _this.viewmode_properties.elLogout.animate({'left': -250});
-      _this.viewmode_properties.elContent.animate({'paddingLeft': 20});
-      _this.viewmode_properties.elBody.addClass('listview');
-      if (_this.viewmode_properties.elAdminPanel)
-        _this.viewmode_properties.elAdminPanel.slideUp();
+    if (_this.$body.hasClass('listView')) {
       $button.html('Switch to normal view');
-      $('.description-text.sprite').hide();
+    } else {
+      $button.html('Switch to list view');
     }
   },
 

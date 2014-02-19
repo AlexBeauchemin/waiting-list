@@ -21,13 +21,13 @@
             </thead>
             <tbody>
             {{#each alerts}}
-                <tr>
+                <tr data-id="{{institutionId}}">
                     <td>{{patientName}}</td>
                     <td>{{institutionName}}</td>
                     <td>{{patientPosition}}</td>
                     <td>{{direction}} {{position}}</td>
                     <td>{{onetime}}</td>
-                    <td><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
+                    <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
                 </tr>
             {{/each}}
             </tbody>

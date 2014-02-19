@@ -23,5 +23,12 @@ Template.profil.alerts = function () {
 Template.profil.events({
   'click [data-action="delete"]': function () {
     Meteor.call('delete_alert', this._id);
+  },
+  'click td': function(e) {
+    var $target = $(e.target);
+    if(!$target.hasClass('actions')) {
+      Session.set("current_institution", $target.parent('tr').attr('data-id'));
+      Helpers.changePage('main');
+    }
   }
 });
