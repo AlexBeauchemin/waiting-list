@@ -1,3 +1,5 @@
+var searchTimeout = null;
+
 //---------------------------------------------------
 // Vars
 //---------------------------------------------------
@@ -14,6 +16,11 @@ Template.institutionslist.institutions = function () {
   }
 
   return Institutions.find({"private": "0"}, {sort: {name: 1}});
+};
+
+Template.institutionslist.searchInstitutions = function () {
+  //TODO: find a way to push the keyup input event reactively
+  return [];
 };
 
 Template.institutionslist.myInstitutions = function () {
@@ -70,6 +77,16 @@ Template.nav.events({
     else {
       Helpers.changePage('main', true);
     }
-  }
+  },
+  'keyup input': function (event) {
+    var val = $(event.target).val();
+    if(searchTimeout) clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function(){
+      if(val.length > 1) {
+        console.log(Institutions.find({"name" : {$regex : ".*" + val + ".*", $options: 'i'}}, {limit: 10}).fetch());
+      }
+    }, 2000);
+  },
+  empty: null
 });
 

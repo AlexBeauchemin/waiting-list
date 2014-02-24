@@ -34,6 +34,11 @@
 
 <template name="institutionslist">
     <div class="institutions">
+        <ul>
+            {{#each searchInstitutions}}
+                {{> institution}}
+            {{/each}}
+        </ul>
         {{#if user}}
             <div class="institutions-group">My institutions</div>
             <ul>

@@ -2,11 +2,10 @@
 Session.set('loginState', "login");
 
 Meteor.subscribe('institutions', null, function () {
-  //TODO: better way to point to the first element id
   if(Institutions) {
-    var defaultInstitution = Institutions.find({"public": true}, {sort: {name: 1}, limit: 1}).fetch();
-    if(defaultInstitution.length) {
-      Session.set("current_institution", defaultInstitution[0]._id);
+    var defaultInstitution = Institutions.findOne({"private": "0"}, {sort: {name: 1}});
+    if(defaultInstitution && defaultInstitution.length) {
+      Session.set("current_institution", defaultInstitution._id);
     }
 
     Meteor.autorun(function () {
@@ -22,3 +21,6 @@ Meteor.subscribe('institutions', null, function () {
 Meteor.startup(function () {
   Helpers.init();
 });
+
+//TODO: Allow public/private switch for institution
+//TODO: Visual hint to know if institution is private or public when administrator

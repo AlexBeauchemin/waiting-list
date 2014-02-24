@@ -1,5 +1,6 @@
 Meteor.publish("institutions", function () {
   //TODO: Return only public institutions and institutions owned by the user
+  //TODO: Limit number of institutions ?
   return Institutions.find({});
 });
 Meteor.publish("patients", function (institution) {
