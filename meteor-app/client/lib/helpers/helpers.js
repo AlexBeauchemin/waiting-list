@@ -2,6 +2,7 @@ Helpers = {
   $body: null,
   $alerts: null,
   currentPage: 'main',
+  $navBar: null,
   spinner: null,
   spinner_opts: {
     lines: 11, // The number of lines to draw
@@ -25,6 +26,7 @@ Helpers = {
     var _this = this;
     _this.$body = $('body');
     _this.$alerts = _this.$body.find('.alerts ul');
+    _this.$navBar = _this.$body.find('.navbar');
   },
 
   bindEvents: function () {
@@ -117,9 +119,11 @@ Helpers = {
     }
 
     _this.currentPage = newPage;
-    $('.container-' + oldPage).stop(true, false).slideUp('fast', function () {
-      $('.container-' + newPage).stop(true, false).slideDown('fast');
-    });
+//    $('.container-' + oldPage).stop(true, false).slideUp('fast', function () {
+//      $('.container-' + newPage).stop(true, false).slideDown('fast');
+//    });
+    $('.container-' + oldPage).hide();
+    $('.container-' + newPage).show();
   },
 
 
@@ -226,6 +230,20 @@ Helpers = {
       });
     });
   },
+
+//  updateSearchResults: function(results) {
+//    var _this = this,
+//      $searchResult = _this.$navBar.find('.search-results');
+//
+//    console.log($searchResult);
+//    console.log($('.search-results'));
+//
+//    $('.search-results').html('');
+//    $.each(results, function(index, result){
+//      $('.search-results').append('<li class="institution" data-id="' + result._id + '"><a href="#">' + result.name + '</a></li>');
+//    });
+//
+//  },
 
   empty: null
 };

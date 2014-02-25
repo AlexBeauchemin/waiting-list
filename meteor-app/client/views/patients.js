@@ -7,6 +7,9 @@ Template.patient.active = function () {
 };
 
 Template.patientlist.patients = function () {
+  Meteor.defer(function() {
+      Helpers.changePage('main', true);
+  });
   var patients = Patients.find({}, {sort: {position: 1, name: -1}});
   return patients.fetch();
 };

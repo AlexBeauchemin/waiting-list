@@ -19,8 +19,11 @@ Template.institutionslist.institutions = function () {
 };
 
 Template.institutionslist.searchInstitutions = function () {
-  //TODO: find a way to push the keyup input event reactively
-  return [];
+  NProgress.done();
+  if(!Session.get('institution_search_string') || Session.get('institution_search_string') === '') {
+    return [];
+  }
+  return Institutions.find({"name" : {$regex : ".*" + Session.get('institution_search_string') + ".*", $options: 'i'}}, {limit: 10}).fetch();
 };
 
 Template.institutionslist.myInstitutions = function () {
@@ -74,18 +77,17 @@ Template.nav.events({
         content: content
       });
     }
-    else {
-      Helpers.changePage('main', true);
-    }
   },
   'keyup input': function (event) {
     var val = $(event.target).val();
+
+    NProgress.start();
+
     if(searchTimeout) clearTimeout(searchTimeout);
+
     searchTimeout = setTimeout(function(){
-      if(val.length > 1) {
-        console.log(Institutions.find({"name" : {$regex : ".*" + val + ".*", $options: 'i'}}, {limit: 10}).fetch());
-      }
-    }, 2000);
+      Session.set('institution_search_string', val);
+    }, 1000);
   },
   empty: null
 });

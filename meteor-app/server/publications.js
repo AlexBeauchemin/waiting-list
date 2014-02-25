@@ -4,6 +4,9 @@ Meteor.publish("institutions", function () {
   return Institutions.find({});
 });
 Meteor.publish("patients", function (institution) {
+  if(!institution) {
+    return [];
+  }
   return Patients.find({institution: institution});
 });
 Meteor.publish("userData", function () {
