@@ -6,6 +6,15 @@ Template.patient.active = function () {
   return Session.equals("selected_patient", this._id) ? "active" : '';
 };
 
+Template.patient.rendered = function() {
+  NProgress.inc();
+  Meteor.defer(function() {
+    Helpers.animateIn(function() {
+      NProgress.done();
+    });
+  });
+};
+
 Template.patientlist.patients = function () {
   Meteor.defer(function() {
       Helpers.changePage('main', true);
@@ -28,9 +37,17 @@ Template.patientlist.institution_info = function () {
 
 Template.patientlist.isAdmin = function () {
   var institution = Institutions.findOne({_id: Session.get('current_institution')});
-  if (!institution || !institution.users)
-    return false;
+  if (!institution || !institution.users || !Meteor.user()) return false;
   return ($.inArray(Meteor.user()._id, institution.users) != -1);
+};
+
+Template.patientlist.isLogged = function () {
+  if(Meteor.user()) return true;
+  return false;
+};
+
+Template.patientlist.isFavored = function () {
+  return false;
 };
 
 
@@ -42,7 +59,9 @@ Template.patientlist.isAdmin = function () {
 Template.patient.events({
   'click .delete': function () {
     Meteor.call('delete_patient', this._id, Session.get("current_institution"));
-    Helpers.updatePatients();
+//    setTimeout(function() {
+      Helpers.updatePatients();
+//    },1000);
   },
   'click .alert-icon': function () {
     $.fancybox({
@@ -118,6 +137,22 @@ Template.patientlist.events({
   'click .viewmode': function (e) {
     Helpers.toggleViewMode($(e.srcElement));
   },
+  'click .btn-favorite': function(e) {
+    var $button = $(e.srcElement);
+    if(!$button.hasClass('.btn')) $button = $button.closest('.btn');
+    var action = $button.attr('data-action');
+    console.log($button, action);
+    $button.toggleClass('hidden');
+    $button.siblings('.btn').toggleClass('hidden');
+
+    //TODO: Save/remove favorite
+    if(action == 'add') {
+
+    }
+    else {
+
+    }
+  },
   'keyup .addPatient': function (event) {
     if (event.keyCode == 13) {
       var $input = $(event.srcElement);
@@ -129,4 +164,9 @@ Template.patientlist.events({
 
 Template.patientlist.rendered = function () {
   Helpers.renderPatientlistTemplate();
+
+  var instance = this;
+  Meteor.defer(function() {
+    $(instance.firstNode).removeClass('transparent');
+  });
 };

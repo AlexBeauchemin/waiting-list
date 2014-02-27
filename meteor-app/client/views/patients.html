@@ -1,32 +1,40 @@
 <template name="patientlist">
-    <div class="container-main">
-        <h2>{{ institution_info.name }} {{#if isAdmin}}<span class="btn btn-dark viewmode">Switch to listview</span>{{/if}}</h2>
-        <p class="description">
+    <h2>
+        {{ institution_info.name }}
         {{#if isAdmin}}
-            <span class="description-text">{{#if institution_info.description}}{{institution_info.description}} <i class="description-text edit fa fa-pencil" data-action="edit"></i>{{/if}}</span>
-            <span class="description-edit{{#if institution_info.description}} hidden{{/if}}">
-                <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
-                <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
-            </span>
+        <span class="btn btn-dark viewmode"><span class="fa fa-expand"></span> Switch to listview</span>
         {{else}}
-            {{#if institution_info.description}}{{institution_info.description}}{{/if}}
+            {{#if isLogged}}
+                <span class="btn btn-blue btn-favorite" data-action="add"><span class="fa fa-heart"></span> Add to favorites</span>
+                <span class="btn btn-favorite hidden" data-action="remove"><span class="fa fa-times"></span> Remove from favorites</span>
+            {{/if}}
         {{/if}}
-        </p>
-        <ul class="patientlist {{#if isAdmin}}sortable{{/if}}">
-            {{#each patients}}
-                {{> patient}}
-            {{/each}}
-        </ul>
+    </h2>
+    <p class="description">
+    {{#if isAdmin}}
+        <span class="description-text">{{#if institution_info.description}}{{institution_info.description}} <i class="description-text edit fa fa-pencil" data-action="edit"></i>{{/if}}</span>
+        <span class="description-edit{{#if institution_info.description}} hidden{{/if}}">
+            <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
+            <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
+        </span>
+    {{else}}
+        {{#if institution_info.description}}{{institution_info.description}}{{/if}}
+    {{/if}}
+    </p>
+    <ul class="patientlist {{#if isAdmin}}sortable{{/if}}">
+        {{#each patients}}
+            {{> patient}}
+        {{/each}}
+    </ul>
 
-        {{#if isAdmin}}
-        <div class="admin-panel">
-            <input type="text" name="addPatient" class="addPatient" value="" />
-            <a href="#" class="no-link btn btn-dark add">Add</a>
-            <a href="#" class="no-link btn btn-danger delete">Delete</a>
-            <a href="#" class="no-link btn btn-dark empty">Empty</a>
-        </div>
-        {{/if}}
+    {{#if isAdmin}}
+    <div class="admin-panel">
+        <input type="text" name="addPatient" class="addPatient" value="" />
+        <a href="#" class="no-link btn btn-dark add">Add</a>
+        <a href="#" class="no-link btn btn-danger delete">Delete</a>
+        <a href="#" class="no-link btn btn-dark empty">Empty</a>
     </div>
+    {{/if}}
 </template>
 
 <template name="patient">

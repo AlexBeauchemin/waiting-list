@@ -6,9 +6,23 @@
     padding-right: 30px;
     width: 100%;
 
+    &>div {
+        transition: none;
+
+        &.container-main {
+            transition: opacity 0.3s ease;
+        }
+    }
+
     .description {
         .description-text {
             cursor: pointer;
+            width: 100%;
+
+            &.edit {
+                float: right;
+                width: auto;
+            }
         }
 
         textarea {
@@ -45,6 +59,7 @@
         li.patient {
             padding: 15px 0;
             position: relative;
+            transition: opacity 0.3s ease;
 
             &.active {
                 a {

@@ -1,6 +1,7 @@
 Helpers = {
-  $body: null,
   $alerts: null,
+  $body: null,
+  $containerMain: null,
   currentPage: 'main',
   $navBar: null,
   spinner: null,
@@ -27,6 +28,7 @@ Helpers = {
     _this.$body = $('body');
     _this.$alerts = _this.$body.find('.alerts ul');
     _this.$navBar = _this.$body.find('.navbar');
+    _this.$containerMain = _this.$body.find('.container-main');
   },
 
   bindEvents: function () {
@@ -54,7 +56,7 @@ Helpers = {
 
     if (name && position && institution) {
       Meteor.call("create_patient", name, position, institution, function (error, patient_id) {
-        App.outputErrors(error);
+        _this.outputErrors(error);
       });
     }
     else {
@@ -72,36 +74,46 @@ Helpers = {
     return new_spinner;
   },
 
-  animateOutput: function (item) {
-    var _this = this,
-      height = item.height() + 10;
-
-    item.css({'height': 0});
-    item.animate({
-      opacity: 1,
-      height: height
-    }, 500, function () {
-      setTimeout(function () {
-        item.animate({
-          opacity: 0,
-          height: 0
-        }, 500, function () {
-          item.remove();
-        });
-      }, 5000);
-    });
-  },
-
-  applySortable: function () {
+  animateIn: function (item, callback, data) {
     var _this = this;
 
-    $(".patientlist").sortable({
-      update: function (event, ui) {
-        _this.updatePatients();
-      }
+    if(!item) item = _this.$containerMain;
+    if(typeof(item) == 'function') {
+      callback = item;
+      item = _this.$containerMain;
+    }
+
+    item.stop(true,false).css({ opacity: 0, display: 'block'}).animate({opacity: 1}, 'fast', function() {
+      if(callback && data) callback(data);
+      else if (callback) callback();
     });
   },
 
+  animateOut: function (item) {
+    var _this = this;
+    if(!item) item = _this.$containerMain;
+    item.css({opacity: 0, display: 'none'});
+  },
+
+  animateOutput: function (item) {
+    var height = item.height() + 10;
+
+    item.css({'height': 0});
+    item.css({
+      opacity: 1,
+      height: height
+    });
+
+    setTimeout(function () {
+      item.css({
+        opacity: 0,
+        height: 0
+      });
+      setTimeout(function() {
+        item.remove();
+      }, 1000);
+    },5000);
+  },
 
   changePage: function (newPage, forced) {
     var _this = this,
@@ -111,9 +123,10 @@ Helpers = {
 
     if (newPage == "login") {
       var container = $('.container-' + newPage);
-      container.show();
       $.fancybox({
-        content: container
+        'content': container,
+        'transitionIn' : 'fade',
+        'transitionOut' : 'fade'
       });
       return;
     }
@@ -123,12 +136,14 @@ Helpers = {
 //      $('.container-' + newPage).stop(true, false).slideDown('fast');
 //    });
     $('.container-' + oldPage).hide();
-    $('.container-' + newPage).show();
+    _this.animateIn($('.container-' + newPage));
   },
 
 
   createAccount: function (name, email, password) {
     var _this = this;
+
+    //TODO: Move this to server?
 
     if (!password || password.length < 5)
       _this.outputErrors("Your password needs to be at least 5 characters.");
@@ -137,6 +152,7 @@ Helpers = {
         $loginBtn = $loginContainer.find('.btn');
       $loginBtn.hide();
       _this.spinner = _this.addSpinner($loginContainer.find('.loading')[0]);
+
       Accounts.createUser({email: email, password: password, profile: {name: name}}, function (error) {
         $loginBtn.show();
         _this.spinner.stop();
@@ -192,7 +208,7 @@ Helpers = {
     }
 
     if (list_rendered && patients_container.hasClass('sortable')) {
-      patients_container.sortable({
+      patients_container.disableSelection().sortable({
         update: function (event, ui) {
           _this.updatePatients();
         }
@@ -208,25 +224,33 @@ Helpers = {
   },
 
   toggleViewMode: function($button) {
-    var _this = this;
+    var _this = this,
+      $patientsList = _this.$containerMain.find('.patientlist'),
+      $icons = $patientsList.find('.alert-icon, .delete').hide();
 
     _this.$body.toggleClass('listView');
 
     if (_this.$body.hasClass('listView')) {
-      $button.html('Switch to normal view');
+      $icons.hide();
+      $button.html('<span class="fa fa-compress"></span> Switch to normal view');
     } else {
-      $button.html('Switch to list view');
+      $icons.show();
+      $button.html('<span class="fa fa-expand"></span> Switch to list view');
     }
+
   },
 
   updatePatients: function () {
-    var _this = this;
+    var _this = this,
+      $patientList = $('.patientlist'),
+      $patients = $patientList.children('.patient');
 
-    //TODO: move this server side?
-    var patients = $('.patientlist .patient');
-    $.each(patients, function (index, patient) {
-      Meteor.call("update_patient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
-        _this.outputErrors(error);
+    $patientList.animate({opacity :0}, function() {
+      //TODO: move this server side?
+      $.each($patients, function (index, patient) {
+        Meteor.call("update_patient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
+          _this.outputErrors(error);
+        });
       });
     });
   },

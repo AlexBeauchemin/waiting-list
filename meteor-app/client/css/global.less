@@ -17,7 +17,6 @@ body {
 }
 
 a {
-    color: white;
     color: @colorBlue;
 
     &:hover, &:active {
@@ -35,14 +34,6 @@ h2 {
     }
 }
 
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
 .alerts {
     left: 0px;
     padding-left: @navWidth;
@@ -50,16 +41,19 @@ h2 {
     top: 0px;
     width: 100%;
     z-index: 8030;
+
     ul {
         list-style: none;
         margin: 0;
         width: 100%;
+
         li {
             cursor: pointer;
             text-align: center;
             padding: 5px 0;
             opacity: 0;
             width: 100%;
+
             .close {
                 background: url('/glyphicons-halflings.png') 156px 0px;
                 display: inline-block;
@@ -73,6 +67,10 @@ h2 {
     }
 }
 
+.left { float: left; }
+
+.right { float: right; }
+
 .discret {
     color: #999;
     font-size: 10px;
@@ -80,6 +78,14 @@ h2 {
 
 .hidden {
     display: none !important;
+}
+
+.transparent {
+    opacity: 0;
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 .loading {
@@ -93,6 +99,10 @@ h2 {
 
 .btn {
     border-radius: 3px;
+
+    .fa {
+        padding-right: 5px;
+    }
 }
 
 .btn-blue {
@@ -140,4 +150,8 @@ h2 {
 
     &.arrow-up { background-position: 0 -70px; }
     &.arrow-down { background-position: 0 -106px; }
+}
+
+.fancybox-overlay, .fancybox-overlay * {
+    transition: none;
 }

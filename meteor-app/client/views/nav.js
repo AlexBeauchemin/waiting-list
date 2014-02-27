@@ -46,6 +46,8 @@ Template.institutionslist.user = function () {
 //---------------------------------------------------
 Template.institution.events({
   'click': function () {
+    NProgress.start();
+    Helpers.animateOut();
     Session.set("current_institution", this._id);
     Helpers.updatePatients();
   }
