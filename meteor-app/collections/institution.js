@@ -1,6 +1,6 @@
 if (Meteor.isServer) {
   Meteor.methods({
-    create_institution: function (name, description, isPrivate) {
+    createInstitution: function (name, description, isPrivate) {
       var user = this.userId;
       if (!user)
         throw new Meteor.Error(403, "You need to be logged in to add an institution.");
@@ -23,19 +23,19 @@ if (Meteor.isServer) {
 
       return false;
     },
-    empty_institution: function (institution) {
+    emptyInstitution: function (institution) {
       if(isAdmin(this.userId,institution)) {
         Patients.remove({institution: institution});
         Alerts.remove({institutionId: institution});
       }
     },
-    delete_institution: function (institution) {
+    deleteInstitution: function (institution) {
       if(isAdmin(this.userId,institution)) {
         Institutions.remove(institution);
         Alerts.remove({institutionId: institution});
       }
     },
-    update_institution: function (institution, data) {
+    updateInstitution: function (institution, data) {
       if(isAdmin(this.userId,institution)) {
         Institutions.update(institution, {$set: data});
       }

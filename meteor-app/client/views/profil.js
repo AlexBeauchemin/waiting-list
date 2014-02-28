@@ -2,7 +2,7 @@ Template.profil.alerts = function () {
   var alerts = Alerts.find({}, {sort: [["dateAdded","desc"]]}).fetch();
   if(alerts.length) {
     alerts.forEach(function(alert) {
-      Meteor.call('get_patient_name', alert.patientId, function(error,name){
+      Meteor.call('getPatientName', alert.patientId, function(error,name){
         alert.patientName = name;
       });
     });

@@ -5,8 +5,11 @@
         <span class="btn btn-dark viewmode"><span class="fa fa-expand"></span> Switch to listview</span>
         {{else}}
             {{#if isLogged}}
-                <span class="btn btn-blue btn-favorite" data-action="add"><span class="fa fa-heart"></span> Add to favorites</span>
-                <span class="btn btn-favorite hidden" data-action="remove"><span class="fa fa-times"></span> Remove from favorites</span>
+                {{#if isFavorite}}
+                    <span class="btn btn-favorite" data-action="remove"><span class="fa fa-times"></span> Remove from favorites</span>
+                {{else}}
+                    <span class="btn btn-blue btn-favorite" data-action="add"><span class="fa fa-heart"></span> Add to favorites</span>
+                {{/if}}
             {{/if}}
         {{/if}}
     </h2>

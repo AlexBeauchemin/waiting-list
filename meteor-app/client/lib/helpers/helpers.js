@@ -55,7 +55,7 @@ Helpers = {
       institution = Session.get("current_institution");
 
     if (name && position && institution) {
-      Meteor.call("create_patient", name, position, institution, function (error, patient_id) {
+      Meteor.call("createPatient", name, position, institution, function (error, patient_id) {
         _this.outputErrors(error);
       });
     }
@@ -153,7 +153,8 @@ Helpers = {
       $loginBtn.hide();
       _this.spinner = _this.addSpinner($loginContainer.find('.loading')[0]);
 
-      Accounts.createUser({email: email, password: password, profile: {name: name}}, function (error) {
+
+      Accounts.createUser({email: email, password: password, profile: {name: name, favorites: []}}, function (error) {
         $loginBtn.show();
         _this.spinner.stop();
         if (error) _this.outputErrors(error);
@@ -248,7 +249,7 @@ Helpers = {
     $patientList.animate({opacity :0}, function() {
       //TODO: move this server side?
       $.each($patients, function (index, patient) {
-        Meteor.call("update_patient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
+        Meteor.call("updatePatient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
           _this.outputErrors(error);
         });
       });
