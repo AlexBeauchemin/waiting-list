@@ -21,7 +21,7 @@ if (Meteor.isServer) {
 
       Meteor.users.update({_id: user}, {$set: {"profile.institutions": institutions}});
 
-      return false;
+      return institution;
     },
     emptyInstitution: function (institution) {
       if(isAdmin(this.userId,institution)) {

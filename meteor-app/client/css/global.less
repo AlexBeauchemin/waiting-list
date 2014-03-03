@@ -36,7 +36,6 @@ h2 {
 
 .alerts {
     left: 0px;
-    padding-left: @navWidth;
     position: fixed;
     top: 0px;
     width: 100%;
@@ -49,10 +48,14 @@ h2 {
 
         li {
             cursor: pointer;
-            text-align: center;
+            max-height: 100px;
             padding: 5px 0;
-            opacity: 0;
+            text-align: center;
             width: 100%;
+
+            &.transparent {
+                max-height: 0;
+            }
 
             .close {
                 background: url('/glyphicons-halflings.png') 156px 0px;

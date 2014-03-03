@@ -1,6 +1,6 @@
 if (Meteor.isServer) {
   Meteor.methods({
-    add_alert: function (institutionId, patientId, position, direction, onetime) {
+    addAlert: function (institutionId, patientId, position, direction, onetime) {
       var user = this.userId;
       if (!user)
         throw new Meteor.Error(403, "You need to be logged in to add an institution.");
@@ -11,7 +11,7 @@ if (Meteor.isServer) {
 
       return false;
     },
-    delete_alert: function(id) {
+    deleteAlert: function(id) {
       var alert = Alerts.findOne({_id : id});
       if(this.userId == alert.user) {
         Alerts.remove(id);

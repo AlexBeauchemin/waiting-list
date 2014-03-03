@@ -29,6 +29,8 @@ Helpers = {
     _this.$alerts = _this.$body.find('.alerts ul');
     _this.$navBar = _this.$body.find('.navbar');
     _this.$containerMain = _this.$body.find('.container-main');
+
+    _this.bindEvents();
   },
 
   bindEvents: function () {
@@ -95,24 +97,19 @@ Helpers = {
     item.css({opacity: 0, display: 'none'});
   },
 
-  animateOutput: function (item) {
-    var height = item.height() + 10;
-
-    item.css({'height': 0});
-    item.css({
-      opacity: 1,
-      height: height
+  animateOutput: function ($item) {
+    $item.on('click', function() {
+      $item.remove();
     });
-
-    setTimeout(function () {
-      item.css({
-        opacity: 0,
-        height: 0
-      });
+    setTimeout(function() {
+      $item.removeClass('transparent');
       setTimeout(function() {
-        item.remove();
-      }, 1000);
-    },5000);
+        $item.addClass('transparent');
+        setTimeout(function() {
+          $item.remove();
+        }, 1000);
+      },5000);
+    },100);
   },
 
   changePage: function (newPage, forced) {
@@ -179,17 +176,16 @@ Helpers = {
         msg = error.reason;
       else
         msg = error;
-      _this.$alerts.append('<li class="btn-danger">' + msg + '<span class="close"></span></li>');
-      var item = _this.$alerts.find('li').last();
 
-      _this.animateOutput(item);
+      var $item = $('<li class="alert-error transparent">' + msg + '<span class="close"></span></li>').appendTo(_this.$alerts);
+      _this.animateOutput($item);
     }
   },
 
   outputSuccess: function (msg) {
     var _this = this;
 
-    _this.$alerts.append('<li class="btn-success">' + msg + '<span class="close"></span></li>');
+    _this.$alerts.append('<li class="alert-success transparent">' + msg + '<span class="close"></span></li>');
     var item = _this.$alerts.find('li').last();
 
     _this.animateOutput(item);

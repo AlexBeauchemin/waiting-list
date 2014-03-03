@@ -23,13 +23,30 @@
             {{#each alerts}}
                 <tr data-id="{{institutionId}}">
                     <td>{{patientName}}</td>
-                    <td>{{institutionName}}</td>
+                    <td><a href="#" class="no-link">{{institutionName}}</a></td>
                     <td>{{patientPosition}}</td>
                     <td>{{direction}} {{position}}</td>
                     <td>{{onetime}}</td>
                     <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
                 </tr>
             {{/each}}
+            </tbody>
+        </table>
+        <h3>Favorites</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each favorites}}
+                    <tr data-id="{{_id}}">
+                        <td><a href="#" class="no-link">{{name}}</a></td>
+                        <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
+                    </tr>
+                {{/each}}
             </tbody>
         </table>
     {{/if}}

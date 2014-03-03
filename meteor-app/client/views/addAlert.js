@@ -33,7 +33,7 @@ Template.addAlert.events({
       patient = $form.find('input[name="id"]').val(),
       pos = $form.find('input[name="pos"]').val();
 
-    Meteor.call('add_alert', institution, patient, pos, direction, onetime, function (error) {
+    Meteor.call('addAlert', institution, patient, pos, direction, onetime, function (error) {
       if (error) {
         Helpers.outputErrors(error);
       }

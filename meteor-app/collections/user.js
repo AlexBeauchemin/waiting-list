@@ -6,6 +6,7 @@ if(Meteor.isServer) {
       var favorites = Meteor.user().profile.favorites;
       if(!favorites) {
         Meteor.users.update({_id:Meteor.user()._id}, {$set: {"profile.favorites": []}});
+        favorites = [];
       }
       if(favorites.indexOf(id) == -1) {
         Meteor.users.update({_id: Meteor.user()._id}, {$addToSet: {"profile.favorites": id}});

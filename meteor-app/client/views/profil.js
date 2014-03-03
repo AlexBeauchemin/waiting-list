@@ -16,19 +16,31 @@ Template.profil.alerts = function () {
   return alerts;
 };
 
+Template.profil.favorites = function () {
+  var user = Meteor.user();
+
+  if (user) {
+    var favorites = Meteor.user().profile.favorites;
+    if(!favorites) favorites = [];
+    return Institutions.find({_id: {$in: favorites}});
+  }
+  return "";
+};
+
 //---------------------------------------------------
 // EVENTS
 //---------------------------------------------------
 
 Template.profil.events({
-  'click [data-action="delete"]': function () {
-    Meteor.call('delete_alert', this._id);
+  'click [data-action="delete-event"]': function () {
+    Meteor.call('deleteAlert', this._id);
   },
-  'click td': function(e) {
+  'click [data-action="delete-favorite"]': function () {
+    Meteor.call('removeFavorite', this._id);
+  },
+  'click td a': function(e) {
     var $target = $(e.target);
-    if(!$target.hasClass('actions')) {
-      Session.set("current_institution", $target.parent('tr').attr('data-id'));
+      Session.set("current_institution", $target.closest('tr').attr('data-id'));
       Helpers.changePage('main');
-    }
   }
 });
