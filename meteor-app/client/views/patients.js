@@ -47,7 +47,6 @@ Template.patientlist.isLogged = function () {
 };
 
 Template.patientlist.isFavorite = function () {
-  console.log(!(!Meteor.user() || !Meteor.user().profile.favorites || Meteor.user().profile.favorites.indexOf(Session.get('current_institution')) == -1));
   return !(!Meteor.user() || !Meteor.user().profile.favorites || Meteor.user().profile.favorites.indexOf(Session.get('current_institution')) == -1);
 };
 

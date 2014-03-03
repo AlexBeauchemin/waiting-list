@@ -12,7 +12,9 @@ Template.institutionslist.institutions = function () {
   //TODO: Filter to not see private lists must be done server side
 
   if (user) {
-    return Institutions.find({"users": {$ne: user._id}, "private": "0"}, {sort: {name: 1}});
+    var favorites = Meteor.user().profile.favorites;
+    if(!favorites) favorites = [];
+    return Institutions.find({"users": {$ne: user._id}, "private": "0", "_id": {$nin: favorites}}, {sort: {name: 1}});
   }
 
   return Institutions.find({"private": "0"}, {sort: {name: 1}});
@@ -30,6 +32,17 @@ Template.institutionslist.myInstitutions = function () {
   var user = Meteor.user();
   if (user) {
     return Institutions.find({users: user._id}, {sort: {name: 1}});
+  }
+  return "";
+};
+
+Template.institutionslist.favInstitutions = function () {
+  var user = Meteor.user();
+
+  if (user) {
+    var favorites = Meteor.user().profile.favorites;
+    if(!favorites) favorites = [];
+    return Institutions.find({_id: {$in: favorites}});
   }
   return "";
 };

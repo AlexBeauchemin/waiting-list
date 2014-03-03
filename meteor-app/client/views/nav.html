@@ -43,15 +43,24 @@
             <div class="institutions-group">My institutions</div>
             <ul>
                 <li class="institution add"><a href="#"><i class="fa fa-plus"></i>Create institution</a></li>
-            {{#with myInstitutions}}
-                {{#if count}}
-                    {{#each this}}
-                        {{> institution}}
-                    {{/each}}
-                {{/if}}
-            {{/with}}
+                {{#with myInstitutions}}
+                    {{#if count}}
+                        {{#each this}}
+                            {{> institution}}
+                        {{/each}}
+                    {{/if}}
+                {{/with}}
             </ul>
             <div class="institutions-group">Favorites</div>
+            <ul>
+                {{#with favInstitutions}}
+                    {{#if count}}
+                        {{#each this}}
+                            {{> institution}}
+                        {{/each}}
+                    {{/if}}
+                {{/with}}
+            </ul>
         {{/if}}
         <div class="institutions-group">Public institutions</div>
         <ul>
