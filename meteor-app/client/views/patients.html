@@ -1,4 +1,5 @@
 <template name="patientlist">
+    {{#if institution_info.name }}
     <h2>
         {{ institution_info.name }}
         {{#if isAdmin}}
@@ -37,6 +38,7 @@
         <a href="#" class="no-link btn btn-danger delete">Delete</a>
         <a href="#" class="no-link btn btn-dark empty">Empty</a>
     </div>
+    {{/if}}
     {{/if}}
 </template>
 

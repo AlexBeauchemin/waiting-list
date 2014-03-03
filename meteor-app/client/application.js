@@ -3,7 +3,7 @@ Session.set('loginState', "login");
 Meteor.subscribe('institutions', null, function () {
   if(Institutions) {
     var defaultInstitution = Institutions.findOne({"private": "0"}, {sort: {name: 1}});
-    Session.setDefault('current_institution', defaultInstitution._id);
+    if(defaultInstitution) Session.setDefault('current_institution', defaultInstitution._id);
 
     Meteor.autorun(function () {
       Meteor.subscribe('patients', Session.get("current_institution"));
