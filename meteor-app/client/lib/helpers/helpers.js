@@ -58,7 +58,7 @@ Helpers = {
 
     if (name && position && institution) {
       Meteor.call("createPatient", name, position, institution, function (error, patient_id) {
-        _this.outputErrors(error);
+        if(error) _this.outputErrors(error);
       });
     }
     else {
@@ -246,7 +246,7 @@ Helpers = {
       //TODO: move this server side?
       $.each($patients, function (index, patient) {
         Meteor.call("updatePatient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
-          _this.outputErrors(error);
+          if(error) _this.outputErrors(error);
         });
       });
     });

@@ -103,9 +103,9 @@ Template.patientlist.events({
 //        });
 //      }
   },
-  'click a.repair': function () {
-    Helpers.updatePatients();
-  },
+//  'click a.repair': function () {
+//    Helpers.updatePatients();
+//  },
   'click a.empty': function () {
     Meteor.call('emptyInstitution', Session.get("current_institution"), function (res) {
       Helpers.outputSuccess('Institution is now empty');
@@ -116,23 +116,38 @@ Template.patientlist.events({
       Helpers.outputSuccess('Institution deleted');
     });
   },
-  'click a[data-action="save-description"]': function () {
+  'click a[data-action="save-description"]': function (e) {
     var description = $('#description').val();
     Meteor.call('updateInstitution', Session.get("current_institution"), {description: description}, function (res) {
       if (description) Helpers.outputSuccess('Description saved');
       else Helpers.outputSuccess('Description deleted');
-      $('.description').children().toggleClass('hidden');
+      $(e.srcElement).closest('p').children().toggleClass('hidden');
     });
   },
-  'click a[data-action="cancel-description"]': function () {
-    var $description = $('.description');
+  'click a[data-action="cancel-description"]': function (e) {
+    var $description = $(e.srcElement).closest('p');
     $description.children().toggleClass('hidden');
-    $description.find('textarea').val($description.children('.description-text').text());
-
+    $description.find('textarea').val($description.children('.text').text());
   },
-  'click span.description-text': function () {
-    $('p.description').children().toggleClass('hidden');
-    $('#description').trigger('focus');
+  'click a[data-action="save-url"]': function (e) {
+    var url = $('#url').val();
+    Meteor.call('updateInstitutionUrl', Session.get("current_institution"), url, function (error) {
+      if(error) {
+        Helpers.outputErrors(error);
+        return;
+      }
+      Helpers.outputSuccess('Url saved');
+      $(e.srcElement).closest('p').children().toggleClass('hidden');
+    });
+  },
+  'click a[data-action="cancel-url"]': function (e) {
+    var $url = $(e.srcElement).closest('p');
+    $url.children().toggleClass('hidden');
+  },
+  'click .description .text, click .url .text, click .edit-icon': function (e) {
+    var $element = $(e.srcElement).closest('p');
+    $element.children('span').toggleClass('hidden');
+    $element.find('input,textarea').trigger('focus');
   },
   'click .viewmode': function (e) {
     Helpers.toggleViewMode($(e.srcElement));
@@ -142,16 +157,8 @@ Template.patientlist.events({
     if(!$button.hasClass('.btn')) $button = $button.closest('.btn');
     var action = $button.attr('data-action');
 
-//    $button.toggleClass('hidden');
-//    $button.siblings('.btn').toggleClass('hidden');
-
-    //TODO: Save/remove favorite
-    if(action == 'add') {
-      Meteor.call('addFavorite',Session.get("current_institution"));
-    }
-    else {
-      Meteor.call('removeFavorite',Session.get("current_institution"));
-    }
+    if(action == 'add') Meteor.call('addFavorite',Session.get("current_institution"));
+    else Meteor.call('removeFavorite',Session.get("current_institution"));
   },
   'keyup .addPatient': function (event) {
     if (event.keyCode == 13) {

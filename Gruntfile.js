@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 		autoprefixer: {
 			dist: {
 				options: {
-					browsers: ['last 2 version', '> 1%', 'ie 8']
+					browsers: ['last 2 version', '> 1%', 'ie 8', 'ie 9', 'Firefox ESR']
 				},
 				files: {
 					'<%= config.cssDest %>/style.css': ['<%= config.cssDest %>/style.css']
@@ -40,9 +40,13 @@ module.exports = function(grunt) {
 			}
 		},
 		less: {
-			options: {
-				yuicompress: true
-			},
+      options: {
+        cleancss: false,
+//TODO: Allow less mapping (is tricky because of meteor files behavior
+//        sourceMap: true,
+//        sourceMapURL: '/map/main.min.css.map',
+//        sourceMapFilename: 'meteor-app/public/map/style.css.map'
+      },
 			files: {
 				src: "<%= config.cssSrc %>/style.less",
 				dest: "<%= config.cssDest %>/style.css"

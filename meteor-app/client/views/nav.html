@@ -9,7 +9,7 @@
 
     <div class="profil">
         {{#if currentUser}}
-            <a href="#">{{currentUser.profile.name}}</a>
+            <i class="fa fa-user"></i><a href="#">{{currentUser.profile.name}}</a>
         {{else}}
             <a href="#" class="login">Log in &nbsp; / &nbsp; Create account</a>
         {{/if}}

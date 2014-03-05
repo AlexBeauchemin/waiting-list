@@ -19,6 +19,7 @@ if (Meteor.isServer) {
         institutions = profile.institutions;
       }
 
+      Institutions.update({_id: institution}, {$set: {"url": institution}});
       Meteor.users.update({_id: user}, {$set: {"profile.institutions": institutions}});
 
       return institution;
@@ -38,6 +39,21 @@ if (Meteor.isServer) {
     updateInstitution: function (institution, data) {
       if(isAdmin(this.userId,institution)) {
         Institutions.update(institution, {$set: data});
+      }
+    },
+    updateInstitutionUrl: function (institution, url) {
+      if(isAdmin(this.userId,institution)) {
+        //TODO: Validate characters accepted in institution url
+        if(!url) url = institution;
+        var result = Institutions.findOne({url: url});
+        if(!result || result._id == institution) {
+          Institutions.update(institution, {$set: {url: url}});
+        }
+        else {
+          throw new Meteor.Error(403, "This url is not valid or already taken.");
+        }
+
+        return true;
       }
     },
 

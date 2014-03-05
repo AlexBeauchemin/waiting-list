@@ -10,23 +10,36 @@
         transition: none;
 
         &.container-main {
+            h2 {
+                margin-bottom: 0;
+                padding-bottom: 5px;
+            }
             transition: opacity 0.3s ease;
         }
     }
 
-    .description {
-        .description-text {
+    .description, .url {
+        .text {
             cursor: pointer;
             width: 100%;
 
-            &.edit {
-                float: right;
+            &.edit-icon {
+                color: @colorDark;
+                padding-left: 10px;
                 width: auto;
             }
         }
 
         textarea {
             width: 100%;
+        }
+    }
+
+    .description {
+        .text {
+            &.edit-icon {
+                float: right;
+            }
         }
     }
 
@@ -66,13 +79,16 @@
                     background-color: @colorBlue;
                     border: 1px solid @colorDark;
                     color: #fff;
-                    padding: 15px 10px;
+                    margin-left: 25px;
+                    padding: 0 10px;
 
-                    .position {
-                        color: #fff;
-                    }
                     .delete {
                         color: #fff;
+                        right: 10px;
+                    }
+
+                    .alert-icon {
+                        right: 40px;
                     }
                 }
             }
@@ -83,34 +99,38 @@
                 display: block;
                 font-weight: bold;
                 margin: 0;
-                padding: 15px 0;
 
                 &:hover, &:active {
                     text-decoration: none;
                 }
 
+                .name {
+                    display: inline-block;
+                    .ellipsis();
+                    padding: 10px 60px 10px 0;
+                    width: 100%;
+                }
+
+                .alert-icon, .delete {
+                    position: absolute;
+                    right: 30px;
+                    top: 20px;
+                }
+
                 .delete {
                     color: @colorRed;
                     display: none;
-                    float: right;
-                    padding-top: 3px;
-                    text-align: right;
-                }
+                    right: 0;
 
-                .alert-icon {
-                    float: right;
-                    margin-right: 5px;
-                }
-
-                .position {
-
+                    i { padding-right: 1px; }
                 }
             }
 
             .arrows {
                 display: none;
+                font-size: 20px;
                 position: absolute;
-                top: 0;
+                top: 10px;
                 left: 0;
 
                 div {

@@ -14,17 +14,25 @@
             {{/if}}
         {{/if}}
     </h2>
-    <p class="description">
     {{#if isAdmin}}
-        <span class="description-text">{{#if institution_info.description}}{{institution_info.description}} <i class="description-text edit fa fa-pencil" data-action="edit"></i>{{/if}}</span>
-        <span class="description-edit{{#if institution_info.description}} hidden{{/if}}">
-            <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
-            <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
-        </span>
+        <p class="discret url">
+            <span class="text">http://mydomain.com/{{institution_info.url}} <i class="text edit-icon fa fa-pencil" data-action="edit"></i></span>
+            <span class="edit hidden">
+                http://mydomain.com/<input id="url" name="url" value="{{institution_info.url}}" />
+                <a class="no-link btn btn-blue" data-action="save-url">Save</a>
+                <a class="no-link btn btn-danger" data-action="cancel-url">Cancel</a>
+            </span>
+        </p>
+        <p class="description">
+            <span class="text">{{#if institution_info.description}}{{institution_info.description}} <i class="text edit-icon fa fa-pencil" data-action="edit"></i>{{/if}}</span>
+            <span class="edit{{#if institution_info.description}} hidden{{/if}}">
+                <textarea id="description" placeholder="Enter a description here">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</textarea>
+                <a class="no-link btn btn-blue" data-action="save-description">Save</a> <a class="no-link btn btn-danger" data-action="cancel-description">Cancel</a>
+            </span>
+        </p>
     {{else}}
-        {{#if institution_info.description}}{{institution_info.description}}{{/if}}
+        <p class="description">{{#if institution_info.description}}{{institution_info.description}}{{/if}}</p>
     {{/if}}
-    </p>
     <ul class="patientlist {{#if isAdmin}}sortable{{/if}}">
         {{#each patients}}
             {{> patient}}
@@ -32,6 +40,7 @@
     </ul>
 
     {{#if isAdmin}}
+    <!-- TODO: Subtil admin panel (open when mouse cursor is bottom of screen) -->
     <div class="admin-panel">
         <input type="text" name="addPatient" class="addPatient" value="" />
         <a href="#" class="no-link btn btn-dark add">Add</a>
@@ -45,14 +54,13 @@
 <template name="patient">
     <li class="patient {{active}}" data-id="{{_id}}">
         <div class="arrows">
-            <div class="sprite arrow-up"></div>
-            <div class="sprite arrow-down"></div>
+            <div class="arrow-up"><i class="fa fa-arrow-up"></i></div>
+            <div class="arrow-down"><i class="fa fa-arrow-down"></i></div>
         </div>
         <a href="#" class="no-link">
-            <span class="position">{{position}}.</span>
-            <span class="name">{{name}}</span>
-            <span class="delete">X</span>
-			<span class="alert-icon"><img src="/alert.png" alt="+" /></span>
+            <span class="name">{{position}}. {{name}}</span>
+            <span class="delete"><i class="fa fa-minus-circle"></i></span>
+			<span class="alert-icon"><i class="fa fa-envelope-o"></i></span>
         </a>
     </li>
 </template>

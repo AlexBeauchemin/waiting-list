@@ -15,8 +15,12 @@ body.listView {
         opacity: 0;
     }
 
-    .description-text.edit {
-        display: none;
+    .url span.text, .description span.text {
+        display: inline !important;
+    }
+
+    .description .edit, .url .edit, .edit-icon {
+        display: none !important;
     }
 
     .description-edit {
@@ -31,7 +35,11 @@ body.listView {
         }
     }
 
-    .patientlist .patient a{
+    .patientlist .patient a {
+        .name {
+            padding-right: 0;
+        }
+
         .delete, .alert-icon {
             opacity: 0;
         }

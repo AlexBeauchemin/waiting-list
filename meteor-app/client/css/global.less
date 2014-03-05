@@ -109,33 +109,33 @@ h2 {
 }
 
 .btn-blue {
-    .gradient(@colorBlue, #006191, @colorBlue);
+    background: @colorBlue linear-gradient(@colorBlue,#006191);
     color: @colorLight;
     text-shadow: 0 1px 1px @colorDark;
 
-    &:hover {
-        .gradient(#006191e, @colorBlue, #006191);
+    &:hover, &:active {
+        background: #006191 linear-gradient(#006191, @colorBlue);
         color: @colorLight;
     }
 }
 
 .btn-dark {
-    font-weight: normal;
+    background: @colorGrey linear-gradient(@colorGrey, #3b3b3b);
     color: @colorLight;
-    .gradient(@colorGrey, #3b3b3b, @colorGrey);
+    font-weight: normal;
     text-shadow: 0 1px 1px @colorDark;
 
     &:hover, &:active {
+        background: #666 linear-gradient(#666, @colorGrey);
         color: @colorLight;
-        .gradient(#666, @colorGrey, #666);
     }
 }
 
 .btn-danger {
-    .gradient(#903636, @colorRed, #903636);
+    background: #903636 linear-gradient(#903636, @colorRed);
 
     &:hover, &:active {
-        .gradient(@colorRed, #903636, @colorRed);
+        background: @colorRed linear-gradient(@colorRed, #903636);
     }
 }
 
@@ -150,9 +150,6 @@ h2 {
 
         &.edit { background-position: 0 -70px; }
     }
-
-    &.arrow-up { background-position: 0 -70px; }
-    &.arrow-down { background-position: 0 -106px; }
 }
 
 .fancybox-overlay, .fancybox-overlay * {
