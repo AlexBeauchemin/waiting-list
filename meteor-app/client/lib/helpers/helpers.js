@@ -229,7 +229,7 @@ Helpers = {
 
     if (_this.$body.hasClass('listView')) {
       $icons.hide();
-      $button.html('<span class="fa fa-compress"></span> Switch to normal view');
+      $button.html('<span class="fa fa-compress"></span>');
     } else {
       $icons.show();
       $button.html('<span class="fa fa-expand"></span> Switch to list view');

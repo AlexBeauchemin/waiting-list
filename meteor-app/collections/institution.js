@@ -43,14 +43,18 @@ if (Meteor.isServer) {
     },
     updateInstitutionUrl: function (institution, url) {
       if(isAdmin(this.userId,institution)) {
-        //TODO: Validate characters accepted in institution url
+        if (!/^[_\-0-9a-z]*$/i.test(url)) {
+          throw new Meteor.Error(403, "This url is not valid.");
+        }
+
         if(!url) url = institution;
         var result = Institutions.findOne({url: url});
+
         if(!result || result._id == institution) {
           Institutions.update(institution, {$set: {url: url}});
         }
         else {
-          throw new Meteor.Error(403, "This url is not valid or already taken.");
+          throw new Meteor.Error(403, "This url is already taken.");
         }
 
         return true;

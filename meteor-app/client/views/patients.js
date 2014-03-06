@@ -166,6 +166,17 @@ Template.patientlist.events({
       Helpers.addPatient($input.val());
       $input.val('');
     }
+  },
+  'keyup #url': function (e) {
+    var $el = $(e.srcElement),
+      url = $el.val();
+
+    $el.closest('p').siblings('.url-error').remove();
+    $el.siblings('[data-action="save-url"]').show();
+    if (!/^[_\-0-9a-z]*$/i.test(url)) {
+      $el.siblings('[data-action="save-url"]').hide();
+      $el.closest('p').after('<p class="alert-danger url-error">You can only use letters, numbers, underscores and hyphens in the url.</p>');
+    }
   }
 });
 
