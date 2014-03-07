@@ -59,6 +59,11 @@
                 &.active {
                     .arrows {
                         display: block;
+
+                        a {
+                            border: none;
+                            text-decoration: none;
+                        }
                     }
                 }
             }
@@ -75,7 +80,7 @@
             transition: opacity 0.3s ease;
 
             &.active {
-                a {
+                &>a {
                     background-color: @colorBlue;
                     border: 1px solid @colorDark;
                     color: #fff;
@@ -114,7 +119,7 @@
                 .alert-icon, .delete {
                     position: absolute;
                     right: 30px;
-                    top: 20px;
+                    top: 23px;
                 }
 
                 .delete {

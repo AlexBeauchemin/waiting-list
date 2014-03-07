@@ -76,20 +76,20 @@ Template.patient.events({
 });
 
 Template.patientlist.events({
-  'click a.up': function () {
-    if (Session.get("selected_patient_position") > 1) {
-      var switching_patient = Patients.findOne({position: Session.get("selected_patient_position") - 1});
-      Patients.update(Session.get("selected_patient"), {$inc: {position: -1}});
-      Patients.update(switching_patient._id, {$inc: {position: +1}});
-      Session.set("selected_patient_position", Session.get("selected_patient_position") - 1);
+  'click a.arrow-up': function () {
+    if (Session.get("selected_patient_pos") > 1) {
+      var switching_patient = Patients.findOne({position: Session.get("selected_patient_pos") - 1});
+      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get("selected_patient_pos") - 1, Session.get('current_institution'));
+      Meteor.call('updatePatient', switching_patient._id, Session.get("selected_patient_pos"), Session.get('current_institution'));
+      Session.set("selected_patient_pos", Session.get("selected_patient_pos") - 1);
     }
   },
-  'click a.down': function () {
-    var switching_patient = Patients.findOne({position: Session.get("selected_patient_position") + 1});
+  'click a.arrow-down': function () {
+    var switching_patient = Patients.findOne({position: Session.get("selected_patient_pos") + 1});
     if (switching_patient) {
-      Patients.update(Session.get("selected_patient"), {$inc: {position: 1}});
-      Patients.update(switching_patient._id, {$inc: {position: -1}});
-      Session.set("selected_patient_position", Session.get("selected_patient_position") + 1);
+      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get("selected_patient_pos") + 1, Session.get('current_institution'));
+      Meteor.call('updatePatient', switching_patient._id, Session.get("selected_patient_pos"), Session.get('current_institution'));
+      Session.set("selected_patient_pos", Session.get("selected_patient_pos") + 1);
     }
   },
   'click a.add': function () {
@@ -177,6 +177,12 @@ Template.patientlist.events({
       $el.siblings('[data-action="save-url"]').hide();
       $el.closest('p').after('<p class="alert-danger url-error">You can only use letters, numbers, underscores and hyphens in the url.</p>');
     }
+  },
+  'click .arrow-up': function() {
+
+  },
+  'click .arrow-down': function() {
+
   }
 });
 
