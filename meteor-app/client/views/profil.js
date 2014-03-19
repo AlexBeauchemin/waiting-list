@@ -22,9 +22,10 @@ Template.profil.favorites = function () {
   if (user) {
     var favorites = Meteor.user().profile.favorites;
     if(!favorites) favorites = [];
-    return Institutions.find({_id: {$in: favorites}});
+    return Institutions.find({_id: {$in: favorites}}).fetch();
   }
-  return "";
+
+  return [];
 };
 
 //---------------------------------------------------
@@ -33,14 +34,15 @@ Template.profil.favorites = function () {
 
 Template.profil.events({
   'click [data-action="delete-event"]': function () {
+    console.log('call');
     Meteor.call('deleteAlert', this._id);
   },
   'click [data-action="delete-favorite"]': function () {
     Meteor.call('removeFavorite', this._id);
   },
-  'click td a': function(e) {
+  'click [data-action="redirect"]': function(e) {
     var $target = $(e.target);
-      Session.set("current_institution", $target.closest('tr').attr('data-id'));
-      Helpers.changePage('main');
+    Session.set("current_institution", $target.closest('tr').attr('data-id'));
+    Helpers.changePage('main');
   }
 });

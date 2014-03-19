@@ -65,6 +65,19 @@
                             text-decoration: none;
                         }
                     }
+
+                    &>a {
+                        margin-left: 25px;
+
+                        .delete {
+                            color: #fff;
+                            right: 10px;
+                        }
+
+                        .alert-icon {
+                            right: 40px;
+                        }
+                    }
                 }
             }
 
@@ -84,17 +97,15 @@
                     background-color: @colorBlue;
                     border: 1px solid @colorDark;
                     color: #fff;
-                    margin-left: 25px;
                     padding: 0 10px;
+                }
+            }
 
-                    .delete {
-                        color: #fff;
-                        right: 10px;
-                    }
+            &>a {
+                cursor: default;
 
-                    .alert-icon {
-                        right: 40px;
-                    }
+                .delete, .alert-icon {
+                    cursor: pointer;
                 }
             }
 
@@ -249,11 +260,16 @@
         padding-left: 0;
     }
 
+    form {
+        display: inline-block;
+    }
+
     input {
-        max-width: 300px;
+        width: 100%;
         &[type="checkbox"] {
             float: left;
             margin-right: 10px;
+            width: auto;
         }
     }
 }
