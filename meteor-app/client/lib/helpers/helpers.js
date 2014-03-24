@@ -243,7 +243,6 @@ Helpers = {
       $patients = $patientList.children('.patient');
 
     $patientList.animate({opacity :0}, function() {
-      //TODO: move this server side?
       $.each($patients, function (index, patient) {
         Meteor.call("updatePatient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
           if(error) _this.outputErrors(error);

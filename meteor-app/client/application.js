@@ -32,3 +32,5 @@ Meteor.startup(function () {
 
 //TODO: http://www.abitibiexpress.ca/Soci%C3%A9t%C3%A9/Sant%C3%A9/2013-01-15/article-3156769/Lurgence-du-CSSSRN-un-modele-pour-le-reste-du-Quebec/1
 //TODO: domaine name : easylivelist , whenismyturn , waittimetracking , aquandmontour
+
+//TODO: Keep meteor running on amazon EC2 : http://stackoverflow.com/questions/21447818/keep-meteor-running-on-amazon-ec2
