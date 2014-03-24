@@ -118,6 +118,8 @@ Helpers = {
 
     if(!forced && newPage == _this.currentPage) return;
 
+    if(newPage != 'main') Session.set('current_institution', null);
+
     if (newPage == "login") {
       var container = $('.container-' + newPage);
       $.fancybox({

@@ -1,12 +1,13 @@
 <template name="profil">
     {{#if currentUser}}
         <h2>Profil</h2>
-        <form class="form-signin clearfix">
+        <form class="form-profil clearfix">
             <input type="text" name="name" placeholder="name" class="input-block-level input-name" value="{{currentUser.profile.name}}"><br />
             <input type="text" name="email" placeholder="email" class="input-block-level input-email" value="{{currentUser.profile.email}}"><br />
             <label for="alert_email">Send me notifications about my subscribed events via email<input type="checkbox" name="alert_email" id="alert_email"></label>
             <button class="no-link btn btn-large btn-blue" type="submit">Save</button>
         </form>
+        {{#if alerts}}
         <h3>Subscribed events</h3>
         <table class="table">
             <thead>
@@ -23,15 +24,17 @@
             {{#each alerts}}
                 <tr data-id="{{institutionId}}">
                     <td>{{patientName}}</td>
-                    <td><a href="#" class="no-link">{{institutionName}}</a></td>
+                    <td><a href="#" class="no-link" data-action="redirect">{{institutionName}}</a></td>
                     <td>{{patientPosition}}</td>
                     <td>{{direction}} {{position}}</td>
                     <td>{{onetime}}</td>
-                    <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
+                    <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete-event">X</a></td>
                 </tr>
             {{/each}}
             </tbody>
         </table>
+        {{/if}}
+        {{#if favorites}}
         <h3>Favorites</h3>
         <table class="table">
             <thead>
@@ -43,11 +46,12 @@
             <tbody>
                 {{#each favorites}}
                     <tr data-id="{{_id}}">
-                        <td><a href="#" class="no-link">{{name}}</a></td>
-                        <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete">X</a></td>
+                        <td><a href="#" class="no-link"  data-action="redirect">{{name}}</a></td>
+                        <td class="actions"><a href="#" class="no-link btn btn-mini btn-danger" data-action="delete-favorite">X</a></td>
                     </tr>
                 {{/each}}
             </tbody>
         </table>
+        {{/if}}
     {{/if}}
 </template>

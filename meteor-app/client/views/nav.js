@@ -73,6 +73,9 @@ Template.nav.events({
   'click .profil': function () {
     Helpers.changePage('profil');
   },
+  'click .profil i': function () {
+    Helpers.changePage('profil');
+  },
   'click .logout': function () {
     Meteor.logout(function (error) {
       if (error) Helpers.outputErrors(error);
