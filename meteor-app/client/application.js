@@ -11,9 +11,6 @@ Meteor.subscribe('institutions', null, function () {
     Meteor.autorun(function () {
       Meteor.subscribe('patients', Session.get("current_institution"));
       Meteor.subscribe('alerts');
-      Meteor.subscribe('userData', null, function () {
-        //console.log('Userdata:',Meteor.user().profile);
-      });
     });
   }
 });
@@ -31,6 +28,6 @@ Meteor.startup(function () {
 //TODO: Add html5shiv / test on ie
 
 //TODO: http://www.abitibiexpress.ca/Soci%C3%A9t%C3%A9/Sant%C3%A9/2013-01-15/article-3156769/Lurgence-du-CSSSRN-un-modele-pour-le-reste-du-Quebec/1
-//TODO: domaine name : easylivelist , whenismyturn , waittimetracking , aquandmontour
+//TODO: domaine name : easylivelist , whenismyturn , waittimetracking , aquandmontour, waitinglist, openlist, waitingroom, wailst
 
 //TODO: Keep meteor running on amazon EC2 : http://stackoverflow.com/questions/21447818/keep-meteor-running-on-amazon-ec2

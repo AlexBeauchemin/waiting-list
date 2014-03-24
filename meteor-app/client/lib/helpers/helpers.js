@@ -4,24 +4,6 @@ Helpers = {
   $containerMain: null,
   currentPage: 'main',
   $navBar: null,
-  spinner: null,
-  spinner_opts: {
-    lines: 11, // The number of lines to draw
-    length: 0, // The length of each line
-    width: 5, // The line thickness
-    radius: 11, // The radius of the inner circle
-    corners: 1, // Corner roundness (0..1)
-    rotate: 0, // The rotation offset
-    color: '#000', // #rgb or #rrggbb
-    speed: 1.3, // Rounds per second
-    trail: 54, // Afterglow percentage
-    shadow: true, // Whether to render a shadow
-    hwaccel: true, // Whether to use hardware acceleration
-    className: 'spinner', // The CSS class to assign to the spinner
-    zIndex: 2e9, // The z-index (defaults to 2000000000)
-    top: '20px', // Top position relative to parent in px
-    left: '20px' // Left position relative to parent in px
-  },
 
   init: function () {
     var _this = this;
@@ -51,29 +33,21 @@ Helpers = {
     });
   },
 
-  addPatient: function(name) {
+  addPatient: function(name, priority) {
     var _this = this,
       position = $('.patient').length + 1,
       institution = Session.get("current_institution");
 
+    //TODO: Mix position and priority
+
     if (name && position && institution) {
-      Meteor.call("createPatient", name, position, institution, function (error, patient_id) {
+      Meteor.call("createPatient", name, position, priority, institution, function (error, patient_id) {
         if(error) _this.outputErrors(error);
       });
     }
     else {
       _this.outputErrors('Sorry, the action failed');
     }
-  },
-
-  addSpinner: function (el) {
-    var _this = this;
-
-    //DOM is constantly refreshed by meteor , so we need to create a new spinner everytime, otherwise we get strange behaviors
-    //TODO: use template preserve ?
-    var new_spinner = new Spinner(_this.spinner_opts).spin();
-    $(el).append(new_spinner.el);
-    return new_spinner;
   },
 
   animateIn: function (item, callback, data) {
@@ -142,20 +116,16 @@ Helpers = {
   createAccount: function (name, email, password) {
     var _this = this;
 
-    //TODO: Move this to server?
-
     if (!password || password.length < 5)
       _this.outputErrors("Your password needs to be at least 5 characters.");
     else {
       var $loginContainer = $('.container-login'),
         $loginBtn = $loginContainer.find('.btn');
-      $loginBtn.hide();
-      _this.spinner = _this.addSpinner($loginContainer.find('.loading')[0]);
 
+      $loginBtn.hide();
 
       Accounts.createUser({email: email, password: password, profile: {name: name, favorites: []}}, function (error) {
         $loginBtn.show();
-        _this.spinner.stop();
         if (error) _this.outputErrors(error);
         else {
           Meteor.loginWithPassword({email: email}, password, function (error) {

@@ -93,15 +93,12 @@ Template.patientlist.events({
     }
   },
   'click a.add': function () {
-    Helpers.addPatient($('.addPatient').val());
-//      var name = $('.addPatient').val(),
-//        position = $('.patient').length + 1,
-//        institution = Session.get("current_institution");
-//      if (name && position && institution) {
-//        Meteor.call("createPatient", name, position, institution, function (error, patient_id) {
-//          Helpers.outputErrors(error);
-//        });
-//      }
+    var $name = $('[name="addPatient"]'),
+      name = $name.val(),
+      priority = $name.siblings('[name="priority"]').val();
+
+    Helpers.addPatient(name,priority);
+
   },
 //  'click a.repair': function () {
 //    Helpers.updatePatients();
@@ -160,10 +157,10 @@ Template.patientlist.events({
     if(action == 'add') Meteor.call('addFavorite',Session.get("current_institution"));
     else Meteor.call('removeFavorite',Session.get("current_institution"));
   },
-  'keyup .addPatient': function (event) {
+  'keyup [name="addPatient"]': function (event) {
     if (event.keyCode == 13) {
       var $input = $(event.srcElement);
-      Helpers.addPatient($input.val());
+      Helpers.addPatient($input.val(),$input.siblings('[name="priority"]').val());
       $input.val('');
     }
   },

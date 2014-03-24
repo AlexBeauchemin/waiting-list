@@ -42,7 +42,9 @@
     {{#if isAdmin}}
     <!-- TODO: Subtil admin panel (open when mouse cursor is bottom of screen) -->
     <div class="admin-panel">
-        <input type="text" name="addPatient" class="addPatient" value="" />
+        <input type="text" name="addPatient" class="text-add-patient" placeholder="Name / ID" value="" />&nbsp;
+        <input type="text" name="position" class="txt-position" placeholder="Position" value="" />
+        <input type="text" name="priority" class="txt-priority" placeholder="Priority" value="" />
         <a href="#" class="no-link btn btn-dark add">Add</a>
         <a href="#" class="no-link btn btn-danger delete">Delete</a>
         <a href="#" class="no-link btn btn-dark empty">Empty</a>

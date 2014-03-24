@@ -1,18 +1,19 @@
 Meteor.publish("institutions", function () {
-  //TODO: Return only public institutions and institutions owned by the user
-  //TODO: Limit number of institutions ?
-  return Institutions.find({});
+  if(!this.userId) return Institutions.find({private: false});
+
+  var userProfile = Meteor.users.findOne({_id: this.userId}, {fields: {'profile': 1}}).profile;
+  if(!userProfile.institutions) userProfile.institutions = [];
+  if(!userProfile.favorites) userProfile.favorites = [];
+
+  return Institutions.find({private: false, $or: [{_id: { $in: userProfile.institutions.concat(userProfile.favorites) }}]});
 });
+
 Meteor.publish("patients", function (institution) {
-  if(!institution) {
-    return [];
-  }
+  if(!institution) return [];
+
   return Patients.find({institution: institution});
 });
-Meteor.publish("userData", function () {
-  return Meteor.users.find({_id: this.userId},
-    {fields: {'profile': 1}});
-});
+
 Meteor.publish("alerts", function () {
   var alerts =  Alerts.find({user: this.userId});
 

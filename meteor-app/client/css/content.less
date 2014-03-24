@@ -162,10 +162,10 @@
 
 //ADMIN PANEL
 .admin-panel {
-    box-shadow: 0 -1px 3px 0.4;
-    background-color: #d1cccc;
-    //  border-top: 1px solid @colorGrey;
+    background-color: #ddd;
+    border-top: 1px solid #aaa;
     bottom: 0;
+    box-shadow: 0 -1px 3px 0.4;
     right: 0;
     overflow: hidden;
     padding: 20px 20px 10px 270px;
@@ -174,12 +174,18 @@
     z-index: 1;
 
     input {
-        border: 1px solid @colorGrey;
+        background-color: #eee;
+        border: 1px solid #aaa;
         float: left;
         height: 30px;
         line-height: 20px;
         padding: 5px;
         width: 300px;
+
+        &.txt-priority, &.txt-position {
+            margin-left: 5px;
+            width: 62px;
+        }
     }
 
     .btn {
@@ -224,10 +230,6 @@
             height: auto;
             margin-bottom: 15px;
             padding: 7px 9px;
-        }
-
-        .loading {
-            float: left;
         }
 
         .login-inputs.login {

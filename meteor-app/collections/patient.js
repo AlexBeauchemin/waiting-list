@@ -1,10 +1,11 @@
 if (Meteor.isServer) {
   Meteor.methods({
-    createPatient: function (name, position, institution) {
+    createPatient: function (name, position, priority, institution) {
       if(isAdmin(this.userId,institution)) {
-        var patient_id = Patients.insert({name: name, position: position, institution: institution});
-        return patient_id;
+        var patientId = Patients.insert({name: name, position: position, priority: priority, institution: institution, dateAdded: new Date()});
+        return patientId;
       }
+      return false;
     },
     updatePatient: function (id, position, institution) {
       if(isAdmin(this.userId,institution)) {

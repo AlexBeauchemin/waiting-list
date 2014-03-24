@@ -1,7 +1,7 @@
 Template.createInstitution.events({
   'click .btn-add-institution': function () {
     var name = $('input.institution-name').val(),
-      isPrivate = $('input[name="private"]:checked').val();
+      isPrivate = $('input[name="private"]:checked').val() === '1';
     Meteor.call("createInstitution", name, '', isPrivate, function (error, result) {
       if (error) {
         Helpers.outputErrors(error);

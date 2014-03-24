@@ -1,3 +1,5 @@
+//TODO: Limit institutions visible in nav (max)
+
 var searchTimeout = null;
 
 //---------------------------------------------------
@@ -9,15 +11,14 @@ Template.institution.active = function () {
 
 Template.institutionslist.institutions = function () {
   var user = Meteor.user();
-  //TODO: Filter to not see private lists must be done server side
 
   if (user) {
     var favorites = Meteor.user().profile.favorites;
     if(!favorites) favorites = [];
-    return Institutions.find({"users": {$ne: user._id}, "private": "0", "_id": {$nin: favorites}}, {sort: {name: 1}});
+    return Institutions.find({users: {$ne: user._id}, private: false, _id: {$nin: favorites}}, {sort: {name: 1}});
   }
 
-  return Institutions.find({"private": "0"}, {sort: {name: 1}});
+  return Institutions.find({private: false}, {sort: {name: 1}});
 };
 
 Template.institutionslist.searchInstitutions = function () {
@@ -25,26 +26,26 @@ Template.institutionslist.searchInstitutions = function () {
   if(!Session.get('institution_search_string') || Session.get('institution_search_string') === '') {
     return [];
   }
-  return Institutions.find({"name" : {$regex : ".*" + Session.get('institution_search_string') + ".*", $options: 'i'}}, {limit: 10}).fetch();
+  return Institutions.find({name : {$regex : ".*" + Session.get('institution_search_string') + ".*", $options: 'i'}}, {limit: 10}).fetch();
 };
 
 Template.institutionslist.myInstitutions = function () {
   var user = Meteor.user();
-  if (user) {
-    return Institutions.find({users: user._id}, {sort: {name: 1}});
-  }
-  return "";
+
+  if (!user) return [];
+
+  return Institutions.find({users: user._id}, {sort: {name: 1}});
 };
 
 Template.institutionslist.favInstitutions = function () {
   var user = Meteor.user();
 
-  if (user) {
-    var favorites = Meteor.user().profile.favorites;
-    if(!favorites) favorites = [];
-    return Institutions.find({_id: {$in: favorites}});
-  }
-  return "";
+  if(!user) return [];
+
+  var favorites = Meteor.user().profile.favorites;
+  if(!favorites) favorites = [];
+  return Institutions.find({_id: {$in: favorites}});
+
 };
 
 Template.institutionslist.user = function () {
