@@ -179,7 +179,18 @@ Helpers = {
     if (list_rendered && patients_container.hasClass('sortable')) {
       patients_container.disableSelection().sortable({
         update: function (event, ui) {
-          _this.updatePatients();
+          var oldPosition = parseInt(ui.item.attr('data-position')),
+            newPosition = null,
+            newPositionElement = ui.item.next();
+
+          if(newPositionElement.length) {
+            newPosition = parseInt(newPositionElement.attr('data-position'));
+          }
+          else {
+            newPosition = parseInt(ui.item.prev().attr('data-position')) + 1;
+          }
+
+          _this.updatePatients(ui.item.attr('data-id'), oldPosition, newPosition);
         }
       });
     }
@@ -209,14 +220,22 @@ Helpers = {
 
   },
 
-  updatePatients: function () {
+  //TODO: Probably not the best way to handle this
+  updatePatients: function (id, start, end) {
+    if(id) {
+      Meteor.call("updatePatientsPosition", id, start, end, Session.get('current_institution'), function (error){
+        if(error) _this.outputErrors(error);
+      });
+      return;
+    }
+
     var _this = this,
       $patientList = $('.patientlist'),
       $patients = $patientList.children('.patient');
 
     $patientList.animate({opacity :0}, function() {
       $.each($patients, function (index, patient) {
-        Meteor.call("updatePatient", $(patient).data('id'), index + 1, Session.get('current_institution'), function (error, patient_id) {
+        Meteor.call("updatePatient", $(patient).data('id'), Session.get('current_institution'), { position: index + 1 }, function (error, patient_id) {
           if(error) _this.outputErrors(error);
         });
       });

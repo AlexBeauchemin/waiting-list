@@ -45,16 +45,17 @@
         <input type="text" name="addPatient" class="text-add-patient" placeholder="Name / ID" value="" />&nbsp;
         <input type="text" name="position" class="txt-position" placeholder="Position" value="" />
         <input type="text" name="priority" class="txt-priority" placeholder="Priority" value="" />
-        <a href="#" class="no-link btn btn-dark add">Add</a>
-        <a href="#" class="no-link btn btn-danger delete">Delete</a>
-        <a href="#" class="no-link btn btn-dark empty">Empty</a>
+        <a href="#" class="no-link btn btn-dark add" data-action="add">Add</a>
+        <a href="#" class="no-link btn btn-danger" data-action="delete">Delete</a>
+        <a href="#" class="no-link btn btn-blue" data-action="repair">Repair</a>
+        <a href="#" class="no-link btn btn-dark" data-action="empty">Empty</a>
     </div>
     {{/if}}
     {{/if}}
 </template>
 
 <template name="patient">
-    <li class="patient {{active}}" data-id="{{_id}}">
+    <li class="patient {{active}}" data-id="{{_id}}" data-position="{{position}}">
         <div class="arrows">
             <a href="#" class="no-link arrow-up"><i class="fa fa-arrow-up"></i></a>
             <a href="#" class="no-link arrow-down"><i class="fa fa-arrow-down"></i></a>

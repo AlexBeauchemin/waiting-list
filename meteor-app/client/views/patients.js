@@ -59,9 +59,6 @@ Template.patientlist.isFavorite = function () {
 Template.patient.events({
   'click .delete': function () {
     Meteor.call('deletePatient', this._id, Session.get("current_institution"));
-//    setTimeout(function() {
-      Helpers.updatePatients();
-//    },1000);
   },
   'click .alert-icon': function () {
     $.fancybox({
@@ -79,16 +76,16 @@ Template.patientlist.events({
   'click a.arrow-up': function () {
     if (Session.get("selected_patient_pos") > 1) {
       var switching_patient = Patients.findOne({position: Session.get("selected_patient_pos") - 1});
-      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get("selected_patient_pos") - 1, Session.get('current_institution'));
-      Meteor.call('updatePatient', switching_patient._id, Session.get("selected_patient_pos"), Session.get('current_institution'));
+      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get('current_institution'), { position: Session.get("selected_patient_pos") - 1});
+      Meteor.call('updatePatient', switching_patient._id, Session.get('current_institution'), { position: Session.get("selected_patient_pos") });
       Session.set("selected_patient_pos", Session.get("selected_patient_pos") - 1);
     }
   },
   'click a.arrow-down': function () {
     var switching_patient = Patients.findOne({position: Session.get("selected_patient_pos") + 1});
     if (switching_patient) {
-      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get("selected_patient_pos") + 1, Session.get('current_institution'));
-      Meteor.call('updatePatient', switching_patient._id, Session.get("selected_patient_pos"), Session.get('current_institution'));
+      Meteor.call('updatePatient', Session.get('selected_patient'), Session.get('current_institution'), { position: Session.get("selected_patient_pos") + 1 });
+      Meteor.call('updatePatient', switching_patient._id, Session.get('current_institution'), { position: Session.get("selected_patient_pos") });
       Session.set("selected_patient_pos", Session.get("selected_patient_pos") + 1);
     }
   },
@@ -100,15 +97,15 @@ Template.patientlist.events({
     Helpers.addPatient(name,priority);
 
   },
-//  'click a.repair': function () {
-//    Helpers.updatePatients();
-//  },
-  'click a.empty': function () {
+  'click [data-action="repair"]': function () {
+    Helpers.updatePatients();
+  },
+  'click [data-action="empty"]': function () {
     Meteor.call('emptyInstitution', Session.get("current_institution"), function (res) {
       Helpers.outputSuccess('Institution is now empty');
     });
   },
-  'click a.delete': function () {
+  'click a[data-action="delete"]': function () {
     Meteor.call('deleteInstitution', Session.get("current_institution"), function (res) {
       Helpers.outputSuccess('Institution deleted');
     });

@@ -63,7 +63,7 @@ Template.institution.events({
     NProgress.start();
     Helpers.animateOut();
     Session.set("current_institution", this._id);
-    Helpers.updatePatients();
+    //TODO: history.pushState
   }
 });
 
